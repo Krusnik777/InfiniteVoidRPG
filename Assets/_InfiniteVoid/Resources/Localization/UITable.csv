@@ -1,0 +1,4 @@
+Key;English;Russian
+loadingKey;Loading...;Загрузка...
+test2;{count} Apples.;Яблоки: {count}.
+test3;Test3 - {count}, {count:plural(place|places)}, {target:plural(same|some)}.;Тест3 - {count} и {count:plural(здеся|здеси|здесь)}, а также {target:plural(там|туда|тута)}.

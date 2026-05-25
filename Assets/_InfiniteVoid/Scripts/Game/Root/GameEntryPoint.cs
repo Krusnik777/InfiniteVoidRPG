@@ -31,6 +31,8 @@ namespace InfiniteVoidRPG.Game.Root
 
         private GameEntryPoint()
         {
+            Localization.LocalizationSystem.CreateInstance();
+
             _coroutines = new GameObject("[COROUTINES]").AddComponent<Coroutines>();
             Object.DontDestroyOnLoad(_coroutines.gameObject);
 
