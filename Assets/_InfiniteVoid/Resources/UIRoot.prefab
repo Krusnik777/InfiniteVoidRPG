@@ -96,7 +96,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 999
   m_TargetDisplay: 0
 --- !u!114 &8459484426667336226
 MonoBehaviour:
@@ -114,7 +114,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -366,6 +366,9 @@ MonoBehaviour:
   m_text: {fileID: 7135567715486900173}
   m_localizationTableKey: 0
   m_localizationEntryKey: loadingKey
+  m_useArguments: 0
+  m_localizationIntArguments: []
+  m_localizationStringArguments: []
 --- !u!1 &7347700419051426822
 GameObject:
   m_ObjectHideFlags: 0

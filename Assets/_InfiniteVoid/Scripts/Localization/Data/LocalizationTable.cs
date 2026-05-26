@@ -25,7 +25,7 @@ namespace Localization
             _entries = CSVParser.LoadLocalizedStringsFromCSV(tableAsset);
         }
 
-        public string Get(string key, LocalizationLanguage language, params KeyValuePair<string, object>[] args)
+        public string Get(string key, LocalizationLanguage language, params LocalizationArgument[] args)
         {
             if (!_entries.ContainsKey(key)) throw new System.ArgumentNullException($"Not found strings for key: {key}");
 
@@ -38,7 +38,7 @@ namespace Localization
                 _ => entry.english
             };
 
-            return args.Length > 0 ? StringFormatter.Format(text, language, args.ToDictionary(pair => pair.Key, pair => pair.Value)) : text;
+            return args.Length > 0 ? StringFormatter.Format(text, language, args.ToDictionary(argument => argument.Key, argument => argument.Value)) : text;
         }
     }
 }

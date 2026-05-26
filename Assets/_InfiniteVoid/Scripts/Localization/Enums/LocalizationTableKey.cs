@@ -1,6 +1,6 @@
 namespace Localization
 {
-    public enum LocalizationTables
+    public enum LocalizationTableKey
     {
         UITable = 0
     }

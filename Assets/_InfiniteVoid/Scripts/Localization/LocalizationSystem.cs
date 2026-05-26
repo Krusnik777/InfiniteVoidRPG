@@ -6,7 +6,8 @@ namespace Localization
 {
     public class LocalizationSystem
     {
-        public static Observable<LocalizationLanguage> CurrentLanguage => _instance == null ? CreateInstance().currentLanguage : _instance.currentLanguage;
+        public static LocalizationLanguage CurrentLanguage => _instance == null ? CreateInstance().currentLanguage.Value : _instance.currentLanguage.Value;
+        public static Observable<LocalizationLanguage> OnCurrentLanguageChange => _instance == null ? CreateInstance().currentLanguage : _instance.currentLanguage;
 
         private static LocalizationSystem _instance;
 
@@ -26,10 +27,15 @@ namespace Localization
             return _instance;
         }
 
-        public static string GetLocalizedString(string tableKey, string key, params KeyValuePair<string, object>[] args)
+        public static string GetLocalizedString(LocalizationTableKey tableKey, string key, params LocalizationArgument[] args)
         {
             if (_instance == null) CreateInstance();
 
+            return GetLocalizedString(tableKey.ToString(), key, args);
+        }  
+
+        private static string GetLocalizedString(string tableKey, string key, params LocalizationArgument[] args)
+        {
             var table = _instance.tables[tableKey];
 
             return table.Get(key, _instance.currentLanguage.Value, args);
@@ -60,7 +66,7 @@ namespace Localization
         {
             _instance.tables = new();
 
-            foreach (var tableName in System.Enum.GetNames(typeof(LocalizationTables)))
+            foreach (var tableName in System.Enum.GetNames(typeof(LocalizationTableKey)))
             {
                 var table = new LocalizationTable(tableName);
 

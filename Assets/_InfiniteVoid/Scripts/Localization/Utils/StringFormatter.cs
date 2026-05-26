@@ -9,8 +9,7 @@ namespace Localization
         private static readonly Regex _placeholderRegex = new Regex(@"\{(\w+)(?::([^}]+))?\}");
 
         private const string _functionCommandEnd = ")";
-        private const string _pluralFunctionCommand = "plural(";
-        private const string _selectFunctionCommand = "select(";
+        private const char _functionParametersSeparator = '|';
 
         public static string Format(string targetText, LocalizationLanguage language, Dictionary<string, object> args)
         {
@@ -61,7 +60,7 @@ namespace Localization
                 string stringValue = rawValue.ToString();
                 if (pairs.TryGetValue(stringValue, out string selected))
                     return selected;
-                else if (pairs.TryGetValue("_default", out string defaultSelected))
+                else if (pairs.TryGetValue(_defaultSelectKey, out string defaultSelected))
                     return defaultSelected;
                 else
                     return rawValue.ToString();
@@ -73,9 +72,11 @@ namespace Localization
 
         #region Plural() Function
 
+        private const string _pluralFunctionCommand = "plural(";
+
         private static string[] SplitArguments(string argsList)
         {
-            var parts = argsList.Split('|');
+            var parts = argsList.Split(_functionParametersSeparator);
 
             for (int i = 0; i < parts.Length; i++)
                 parts[i] = parts[i].Trim();
@@ -115,20 +116,25 @@ namespace Localization
 
         #region Select() Function
 
+        private const string _selectFunctionCommand = "select(";
+
+        private const char _selectVariationsSeparator = '=';
+        private const string _defaultSelectKey = "_default";
+
         private static Dictionary<string, string> ParseSelectPairs(string argsList)
         {
             var dict = new Dictionary<string, string>();
-            var parts = argsList.Split('|');
+            var parts = argsList.Split(_functionParametersSeparator);
 
             foreach (var part in parts)
             {
-                var kv = part.Split('=');
+                var kv = part.Split(_selectVariationsSeparator);
                 if (kv.Length == 2)
                     dict[kv[0].Trim()] = kv[1].Trim();
             }
 
-            if (!dict.ContainsKey("_default"))
-                dict["_default"] = dict.Values.FirstOrDefault() ?? "";
+            if (!dict.ContainsKey(_defaultSelectKey))
+                dict[_defaultSelectKey] = dict.Values.FirstOrDefault() ?? "";
 
             return dict;
         }
