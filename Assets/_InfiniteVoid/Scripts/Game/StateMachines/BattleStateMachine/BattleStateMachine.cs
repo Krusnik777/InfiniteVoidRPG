@@ -1,17 +1,18 @@
+using DI;
 using StateMachine;
 
-namespace InfiniteVoidRPG.Game.StateMachines
+namespace InfiniteVoidRPG.Game.StateMachines.Battle
 {
     public class BattleStateMachine : AbstractStateMachine
     {
-        public BattleStateMachine(IStateMachine expeditionStateMachine/*, other parameters*/)
+        public BattleStateMachine(IStateMachine expeditionStateMachine, DIContainer sceneContainer/*, other parameters*/)
         {
             _states = new()
             {
-                [typeof(BattleFlowCheckState)] = new BattleFlowCheckState(this/*, other parameters*/), 
-                [typeof(PlayerTurnState)] = new PlayerTurnState(this/*, other parameters*/), 
-                [typeof(EnemyTurnState)] = new EnemyTurnState(this/*, other parameters*/),
-                [typeof(BattleEndState)] = new BattleEndState(this, expeditionStateMachine/*, other parameters*/)
+                [typeof(BattleFlowCheckState)] = new BattleFlowCheckState(this, sceneContainer/*, other parameters*/), 
+                [typeof(PlayerTurnState)] = new PlayerTurnState(this, sceneContainer/*, other parameters*/), 
+                [typeof(EnemyTurnState)] = new EnemyTurnState(this, sceneContainer/*, other parameters*/),
+                [typeof(BattleEndState)] = new BattleEndState(this, expeditionStateMachine, sceneContainer/*, other parameters*/)
             };
         }
 
