@@ -5,6 +5,7 @@ using R3;
 using DI;
 using InfiniteVoidRPG.Utils;
 using InfiniteVoidRPG.Game.EntryPoints;
+using InfiniteVoidRPG.Game.Services;
 
 namespace InfiniteVoidRPG.Game.Root
 {
@@ -49,6 +50,12 @@ namespace InfiniteVoidRPG.Game.Root
             AudioSource bgmContainer = new GameObject("[BACKGROUND_MUSIC]").AddComponent<AudioSource>();
             bgmContainer.transform.SetParent(audioSystemContainer.transform);
             Object.DontDestroyOnLoad(audioSystemContainer);
+
+            var inputDeviceDetectService = new InputDeviceDetectService();
+            _rootContainer.RegisterInstance(inputDeviceDetectService);
+
+            var gameInputService = new GameInputService();
+            _rootContainer.RegisterInstance(gameInputService);
         }
 
         private /*async*/ void RunGame()

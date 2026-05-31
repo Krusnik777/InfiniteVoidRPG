@@ -1,3 +1,4 @@
+using InfiniteVoidRPG.Game.Services;
 using R3;
 
 namespace InfiniteVoidRPG.UI.Gameplay
@@ -7,10 +8,20 @@ namespace InfiniteVoidRPG.UI.Gameplay
         public Observable<string> OnChoseMade => _onChoseMade;
 
         private ForkPathScreenView _concreteView => _view as ForkPathScreenView;
-        
+
         private Subject<string> _onChoseMade = new();
 
+        private CompositeDisposable _buttonsDisposables;
+
         public ForkPathScreen(ForkPathScreenView view) : base(view) { }
+
+        public void Initialize(GameInputService gameInputService)
+        {
+            _concreteView.ForwardButton.Init(gameInputService);
+            _concreteView.BackwardButton.Init(gameInputService);
+            _concreteView.LeftButton.Init(gameInputService);
+            _concreteView.RightButton.Init(gameInputService);
+        }
 
         public override void Show()
         {
@@ -23,30 +34,35 @@ namespace InfiniteVoidRPG.UI.Gameplay
         {
             base.Hide();
 
-            UnsubscribeFromButtons();
+            _buttonsDisposables?.Dispose();
+
+            _concreteView.ForwardButton.Reset();
+            _concreteView.BackwardButton.Reset();
+            _concreteView.LeftButton.Reset();
+            _concreteView.RightButton.Reset();
         }
 
         public override void Dispose()
         {
             base.Dispose();
 
-            UnsubscribeFromButtons();
+            _buttonsDisposables?.Dispose();
+
+            _concreteView.ForwardButton.Dispose();
+            _concreteView.BackwardButton.Dispose();
+            _concreteView.LeftButton.Dispose();
+            _concreteView.RightButton.Dispose();
         }
 
         private void SubscribeToButtons()
         {
-            _concreteView.LeftButton.onClick.AddListener(() => _onChoseMade.OnNext("left"));
-            _concreteView.RightButton.onClick.AddListener(() => _onChoseMade.OnNext("right"));
-            _concreteView.ForwardButton.onClick.AddListener(() => _onChoseMade.OnNext("forward"));
-            _concreteView.BackwardButton.onClick.AddListener(() => _onChoseMade.OnNext("backward"));
-        }
-
-        private void UnsubscribeFromButtons()
-        {
-            _concreteView.LeftButton.onClick.RemoveAllListeners();
-            _concreteView.RightButton.onClick.RemoveAllListeners();
-            _concreteView.ForwardButton.onClick.RemoveAllListeners();
-            _concreteView.BackwardButton.onClick.RemoveAllListeners();
+            _buttonsDisposables = new()
+            {
+                _concreteView.LeftButton.OnPress.Subscribe(_ => _onChoseMade.OnNext("left")),
+                _concreteView.RightButton.OnPress.Subscribe(_ => _onChoseMade.OnNext("right")),
+                _concreteView.ForwardButton.OnPress.Subscribe(_ => _onChoseMade.OnNext("forward")),
+                _concreteView.BackwardButton.OnPress.Subscribe(_ => _onChoseMade.OnNext("backward"))
+            };
         }
     }
 }

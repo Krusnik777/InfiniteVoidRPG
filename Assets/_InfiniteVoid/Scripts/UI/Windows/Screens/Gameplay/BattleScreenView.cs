@@ -1,11 +1,12 @@
+using UI.Buttons;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace InfiniteVoidRPG.UI.Gameplay
 {
     public class BattleScreenView : WindowView
     {
-        [field: SerializeField] public Button FinishTurnButton { get; private set; }
-        [field: SerializeField] public Button FinishBattleButton { get; private set; }
+        [field: SerializeField] public SelectableButtonsContainer ButtonsContainer { get; private set; }
+        [field: SerializeField] public SelectableButton FinishTurnButton { get; private set; }
+        [field: SerializeField] public SelectableButton FinishBattleButton { get; private set; }
     }
 }

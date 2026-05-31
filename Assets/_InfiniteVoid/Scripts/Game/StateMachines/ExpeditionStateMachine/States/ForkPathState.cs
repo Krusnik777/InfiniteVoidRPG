@@ -3,6 +3,7 @@ using StateMachine;
 using R3;
 using InfiniteVoidRPG.Game.Gameplay;
 using InfiniteVoidRPG.UI.Gameplay;
+using InfiniteVoidRPG.Game.Services;
 
 namespace InfiniteVoidRPG.Game.StateMachines
 {
@@ -24,6 +25,7 @@ namespace InfiniteVoidRPG.Game.StateMachines
             var gameplayUIController = _sceneContainer.Resolve<GameplayUIController>();
 
             var screen = gameplayUIController.ShowScreen<ForkPathScreen>();
+            screen.Initialize(_sceneContainer.Resolve<GameInputService>());
 
             _disposable = screen.OnChoseMade.Subscribe(result =>
             {

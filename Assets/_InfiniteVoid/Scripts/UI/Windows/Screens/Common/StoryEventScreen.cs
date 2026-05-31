@@ -6,7 +6,7 @@ namespace InfiniteVoidRPG.UI.Common
 
         public StoryEventScreen(StoryEventScreenView view) : base(view) {}
 
-        public void ShowMessage(string text)
+        public void ShowMessage(string text) // Temp
         {
             if (!_concreteView.MessagePanel.activeSelf) _concreteView.MessagePanel.SetActive(true);
 

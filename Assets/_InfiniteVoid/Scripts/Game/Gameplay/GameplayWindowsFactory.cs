@@ -58,9 +58,9 @@ namespace InfiniteVoidRPG.Game.Gameplay
         private T InstantiateWindowView<T>(string prefabPath) where T : WindowView
         {
             var prefab = Resources.Load<T>(prefabPath);
-            var createdScreen = GameObject.Instantiate(prefab, _screensHolder);
+            var windowView = GameObject.Instantiate(prefab, _screensHolder);
 
-            return createdScreen;
+            return windowView;
         }
 
         private string GetCommonUIScreenPrefabPath(string viewName)

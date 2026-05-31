@@ -1,3 +1,4 @@
+using InfiniteVoidRPG.Game.Services;
 using R3;
 
 namespace InfiniteVoidRPG.UI.Gameplay
@@ -8,9 +9,19 @@ namespace InfiniteVoidRPG.UI.Gameplay
 
         private BattleScreenView _concreteView => _view as BattleScreenView;
 
+        private GameInputService _gameInputService;
+
         private Subject<string> _onChoseMade = new();
 
+        private CompositeDisposable _buttonsDisposables;
+
         public BattleScreen(BattleScreenView view) : base(view) { }
+
+        public void Initialize(GameInputService gameInputService)
+        {
+            _gameInputService = gameInputService;
+            _concreteView.ButtonsContainer.Init();
+        }
 
         public override void Show()
         {
@@ -23,38 +34,36 @@ namespace InfiniteVoidRPG.UI.Gameplay
         {
             base.Hide();
 
-            UnsubscribeFromButtons();
+            _buttonsDisposables?.Dispose();
         }
 
         public override void Dispose()
         {
             base.Dispose();
 
-            UnsubscribeFromButtons();
+            _buttonsDisposables?.Dispose();
+            _concreteView.ButtonsContainer?.Dispose();
         }
 
         public void ShowButtons()
         {
-            _concreteView.FinishTurnButton.gameObject.SetActive(true);
-            _concreteView.FinishBattleButton.gameObject.SetActive(true);
+            _concreteView.ButtonsContainer.EnableInputs(_gameInputService);
+            _concreteView.ButtonsContainer.gameObject.SetActive(true);
         }
 
         public void HideButtons()
         {
-            _concreteView.FinishTurnButton.gameObject.SetActive(false);
-            _concreteView.FinishBattleButton.gameObject.SetActive(false);
+            _concreteView.ButtonsContainer.DisableInputs();
+            _concreteView.ButtonsContainer.gameObject.SetActive(false);
         }
 
         private void SubscribeToButtons()
         {
-            _concreteView.FinishTurnButton.onClick.AddListener(() => _onChoseMade.OnNext(string.Empty));
-            _concreteView.FinishBattleButton.onClick.AddListener(() => _onChoseMade.OnNext("finish"));
-        }
-
-        private void UnsubscribeFromButtons()
-        {
-            _concreteView.FinishTurnButton.onClick.RemoveAllListeners();
-            _concreteView.FinishBattleButton.onClick.RemoveAllListeners();
+            _buttonsDisposables = new()
+            {
+                _concreteView.FinishTurnButton.OnPress.Subscribe(_ => _onChoseMade.OnNext(string.Empty)),
+                _concreteView.FinishBattleButton.OnPress.Subscribe(_ => _onChoseMade.OnNext("finish"))
+            };
         }
     }
 }

@@ -1,5 +1,6 @@
 using DI;
 using InfiniteVoidRPG.Game.Gameplay;
+using InfiniteVoidRPG.Game.Services;
 using InfiniteVoidRPG.Game.StateMachines.Battle;
 using InfiniteVoidRPG.UI.Gameplay;
 using StateMachine;
@@ -22,7 +23,8 @@ namespace InfiniteVoidRPG.Game.StateMachines
         {
             var gameplayUIController = _sceneContainer.Resolve<GameplayUIController>();
 
-            gameplayUIController.ShowScreen<BattleScreen>();
+            var screen = gameplayUIController.ShowScreen<BattleScreen>();
+            screen.Initialize(_sceneContainer.Resolve<GameInputService>());
 
             _battleStateMachine = new(_stateMachine, _sceneContainer);
 

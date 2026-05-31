@@ -1,8 +1,9 @@
 using DI;
 using StateMachine;
-using InfiniteVoidRPG.Utils;
 using InfiniteVoidRPG.Game.Gameplay;
 using InfiniteVoidRPG.UI.Common;
+using InfiniteVoidRPG.Game.Services;
+using R3;
 
 namespace InfiniteVoidRPG.Game.StateMachines
 {
@@ -25,7 +26,7 @@ namespace InfiniteVoidRPG.Game.StateMachines
             var window = gameplayUIController.ShowScreen<StoryEventScreen>();
             window.ShowMessage($"Random number : {UnityEngine.Random.Range(0, 99999)}");
 
-            _disposable = R3Extensions.DelayedCall(5f, () => _stateMachine.SetState<ForkPathState>());
+            _disposable = _sceneContainer.Resolve<GameInputService>().OnUISubmitPressed.Subscribe(_ => _stateMachine.SetState<ForkPathState>());
         }
 
         public void Exit()

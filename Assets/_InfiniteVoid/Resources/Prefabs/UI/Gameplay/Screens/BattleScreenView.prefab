@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 4123774494807216242}
   - component: {fileID: 5987357478972145781}
   - component: {fileID: 8108359676657647368}
-  - component: {fileID: 1717610072675134885}
+  - component: {fileID: 8254259707879106259}
   m_Layer: 0
   m_Name: NextTurnButton
   m_TagString: Untagged
@@ -214,7 +214,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1717610072675134885
+--- !u!114 &8254259707879106259
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -223,41 +223,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 533554493313945415}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: d80c4b87cf6c9064ca1c2393292bba40, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 8108359676657647368}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls: []
+  m_EditorClassIdentifier: Assembly-CSharp::UI.Buttons.SelectableButton
+  <Interactable>k__BackingField: 1
+  m_playPressAnimation: 1
+  m_selectableTransition:
+    Type: 2
+    SelectedIndicator: {fileID: 0}
+    TargetGraphic: {fileID: 8108359676657647368}
+    SelectedColor: {r: 0.13039589, g: 1, b: 0, a: 1}
+    UnselectedColor: {r: 1, g: 1, b: 1, a: 1}
+    TargetScale: 1.2
+    AnimationTime: 0.25
 --- !u!1 &4050513201092537342
 GameObject:
   m_ObjectHideFlags: 0
@@ -269,7 +247,7 @@ GameObject:
   - component: {fileID: 5074919671444158024}
   - component: {fileID: 1345618653053037049}
   - component: {fileID: 3566842021691144186}
-  - component: {fileID: 5639796704239808360}
+  - component: {fileID: 5771433630582914077}
   m_Layer: 0
   m_Name: FinishButton
   m_TagString: Untagged
@@ -335,7 +313,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5639796704239808360
+--- !u!114 &5771433630582914077
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -344,41 +322,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 4050513201092537342}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: d80c4b87cf6c9064ca1c2393292bba40, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 3566842021691144186}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls: []
+  m_EditorClassIdentifier: Assembly-CSharp::UI.Buttons.SelectableButton
+  <Interactable>k__BackingField: 1
+  m_playPressAnimation: 1
+  m_selectableTransition:
+    Type: 2
+    SelectedIndicator: {fileID: 0}
+    TargetGraphic: {fileID: 3566842021691144186}
+    SelectedColor: {r: 0.13039589, g: 1, b: 0, a: 1}
+    UnselectedColor: {r: 1, g: 1, b: 1, a: 1}
+    TargetScale: 1.2
+    AnimationTime: 0.25
 --- !u!1 &7202897230198059925
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,6 +345,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5600772423227797368}
   - component: {fileID: 1104948487387778991}
+  - component: {fileID: 4987688234652464735}
   m_Layer: 0
   m_Name: BattleScreenView
   m_TagString: Untagged
@@ -429,8 +386,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 974410744b1381743bee752e10c455b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InfiniteVoidRPG.UI.Gameplay.BattleScreenView
-  <FinishTurnButton>k__BackingField: {fileID: 1717610072675134885}
-  <FinishBattleButton>k__BackingField: {fileID: 5639796704239808360}
+  <ButtonsContainer>k__BackingField: {fileID: 4987688234652464735}
+  <FinishTurnButton>k__BackingField: {fileID: 8254259707879106259}
+  <FinishBattleButton>k__BackingField: {fileID: 5771433630582914077}
+--- !u!114 &4987688234652464735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7202897230198059925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c58e7fde78bba647ba7e92587d06ceb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI.Buttons.SelectableButtonsContainer
+  <Interactable>k__BackingField: 1
+  m_buttons:
+  - {fileID: 8254259707879106259}
+  - {fileID: 5771433630582914077}
 --- !u!1 &8588249148020426720
 GameObject:
   m_ObjectHideFlags: 0
