@@ -8,11 +8,18 @@ namespace UI.Buttons
     public class InputButton : UIButton, IDisposable
     {
         [Header("Input")]
-        [SerializeField] private InputActionReference m_inputActionReference;
+        [SerializeField] protected InputActionReference m_inputActionReference;
 
-        private InputAction _bindedAction;
+        protected InputAction _bindedAction;
 
-        public void Dispose()
+        public override void ResetState()
+        {
+            base.ResetState();
+
+            Dispose();
+        }
+
+        public virtual void Dispose()
         {
             if (_bindedAction != null)
             {
@@ -20,7 +27,7 @@ namespace UI.Buttons
             }
         }
 
-        public void Init(GameInputService gameInputService)
+        public virtual void Init(GameInputService gameInputService)
         {
             _bindedAction = gameInputService.ActionsAsset.FindAction(m_inputActionReference.action.name);
 

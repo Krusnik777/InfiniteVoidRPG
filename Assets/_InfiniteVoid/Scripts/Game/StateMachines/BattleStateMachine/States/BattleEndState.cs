@@ -1,6 +1,7 @@
 using DI;
 using InfiniteVoidRPG.Game.Gameplay;
 using InfiniteVoidRPG.UI.Gameplay;
+using InfiniteVoidRPG.Utils;
 using StateMachine;
 
 namespace InfiniteVoidRPG.Game.StateMachines.Battle
@@ -10,6 +11,8 @@ namespace InfiniteVoidRPG.Game.StateMachines.Battle
         private IStateMachine _stateMachine;
         private IStateMachine _expeditionStateMachine;
         private DIContainer _sceneContainer;
+
+        private System.IDisposable _disposable;
 
         public BattleEndState(IStateMachine stateMachine, IStateMachine expeditionStateMachine, DIContainer sceneContainer)
         {
@@ -25,12 +28,12 @@ namespace InfiniteVoidRPG.Game.StateMachines.Battle
             var screen = gameplayUIController.GetScreen<BattleScreen>();
             screen.HideButtons();
 
-            _expeditionStateMachine.SetState<ForkPathState>();
+            _disposable = R3Extensions.DelayedCall(1f, () => _expeditionStateMachine.SetState<ForkPathState>());
         }
 
         public void Exit()
         {
-            
+            _disposable?.Dispose();
         }
     }
 }

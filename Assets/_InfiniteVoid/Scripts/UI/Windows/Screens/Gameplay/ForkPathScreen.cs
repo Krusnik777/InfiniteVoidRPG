@@ -36,10 +36,10 @@ namespace InfiniteVoidRPG.UI.Gameplay
 
             _buttonsDisposables?.Dispose();
 
-            _concreteView.ForwardButton.Reset();
-            _concreteView.BackwardButton.Reset();
-            _concreteView.LeftButton.Reset();
-            _concreteView.RightButton.Reset();
+            _concreteView.ForwardButton.ResetState();
+            _concreteView.BackwardButton.ResetState();
+            _concreteView.LeftButton.ResetState();
+            _concreteView.RightButton.ResetState();
         }
 
         public override void Dispose()

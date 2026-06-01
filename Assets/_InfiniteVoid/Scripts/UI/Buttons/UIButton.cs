@@ -23,7 +23,7 @@ namespace UI.Buttons
 
         public virtual void SetInteractable(bool state) => Interactable = state;
 
-        public virtual void OnPointerEnter(PointerEventData eventData)
+        public void OnPointerEnter(PointerEventData eventData)
         {
             if (!Interactable) return;
 
@@ -42,7 +42,7 @@ namespace UI.Buttons
             HandleOnPointerClick();
         }
 
-        public void Reset() // maybe temp
+        public virtual void ResetState()
         {
             if (m_selectableTransition.Type == SelectableTransition.SelectType.Animation)
             {

@@ -331,6 +331,42 @@ namespace InfiniteVoidRPG
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""500701b4-1fcb-46fb-a2cc-38556e1f990a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""8cd2d6f6-d4d5-406f-b38c-414c3cf3c45e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""239e0fdd-9988-4ca9-a67b-5acd5d32a598"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""a1551714-70a6-4254-8673-e4a748596ee8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -421,6 +457,138 @@ namespace InfiniteVoidRPG
                     ""action"": ""Skills"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9ab85819-e67b-44a3-8bad-bcb37a666759"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""83833ae5-bc9a-4eb6-8348-67bc24b9e3f7"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""94b2cb39-1869-4888-9b95-c3d90f275d40"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6ce4dc52-f8eb-4957-a785-f35dd9179829"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ad63aa99-8f9c-4df0-8eac-9e1444e99dcf"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c4a28770-7657-4dbd-b33f-e54c29dd769f"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""66ecb0eb-f285-4027-ad49-01896dc3bead"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3723b381-67d5-420d-8635-d0ed0c11a3ee"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""20d18c35-8ee2-4399-a481-5ca30c97c238"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3f5ca7f4-d97d-4ddd-a95c-01686392e414"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""106b16b8-1bc1-463b-945a-73477d627d97"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0d2c3758-d92d-478f-9920-ada3a972bc21"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -498,6 +666,10 @@ namespace InfiniteVoidRPG
             m_InputButtons_Defend = m_InputButtons.FindAction("Defend", throwIfNotFound: true);
             m_InputButtons_Items = m_InputButtons.FindAction("Items", throwIfNotFound: true);
             m_InputButtons_Skills = m_InputButtons.FindAction("Skills", throwIfNotFound: true);
+            m_InputButtons_Up = m_InputButtons.FindAction("Up", throwIfNotFound: true);
+            m_InputButtons_Down = m_InputButtons.FindAction("Down", throwIfNotFound: true);
+            m_InputButtons_Left = m_InputButtons.FindAction("Left", throwIfNotFound: true);
+            m_InputButtons_Right = m_InputButtons.FindAction("Right", throwIfNotFound: true);
         }
 
         ~@GameInput()
@@ -690,6 +862,10 @@ namespace InfiniteVoidRPG
         private readonly InputAction m_InputButtons_Defend;
         private readonly InputAction m_InputButtons_Items;
         private readonly InputAction m_InputButtons_Skills;
+        private readonly InputAction m_InputButtons_Up;
+        private readonly InputAction m_InputButtons_Down;
+        private readonly InputAction m_InputButtons_Left;
+        private readonly InputAction m_InputButtons_Right;
         /// <summary>
         /// Provides access to input actions defined in input action map "InputButtons".
         /// </summary>
@@ -717,6 +893,22 @@ namespace InfiniteVoidRPG
             /// Provides access to the underlying input action "InputButtons/Skills".
             /// </summary>
             public InputAction @Skills => m_Wrapper.m_InputButtons_Skills;
+            /// <summary>
+            /// Provides access to the underlying input action "InputButtons/Up".
+            /// </summary>
+            public InputAction @Up => m_Wrapper.m_InputButtons_Up;
+            /// <summary>
+            /// Provides access to the underlying input action "InputButtons/Down".
+            /// </summary>
+            public InputAction @Down => m_Wrapper.m_InputButtons_Down;
+            /// <summary>
+            /// Provides access to the underlying input action "InputButtons/Left".
+            /// </summary>
+            public InputAction @Left => m_Wrapper.m_InputButtons_Left;
+            /// <summary>
+            /// Provides access to the underlying input action "InputButtons/Right".
+            /// </summary>
+            public InputAction @Right => m_Wrapper.m_InputButtons_Right;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -755,6 +947,18 @@ namespace InfiniteVoidRPG
                 @Skills.started += instance.OnSkills;
                 @Skills.performed += instance.OnSkills;
                 @Skills.canceled += instance.OnSkills;
+                @Up.started += instance.OnUp;
+                @Up.performed += instance.OnUp;
+                @Up.canceled += instance.OnUp;
+                @Down.started += instance.OnDown;
+                @Down.performed += instance.OnDown;
+                @Down.canceled += instance.OnDown;
+                @Left.started += instance.OnLeft;
+                @Left.performed += instance.OnLeft;
+                @Left.canceled += instance.OnLeft;
+                @Right.started += instance.OnRight;
+                @Right.performed += instance.OnRight;
+                @Right.canceled += instance.OnRight;
             }
 
             /// <summary>
@@ -778,6 +982,18 @@ namespace InfiniteVoidRPG
                 @Skills.started -= instance.OnSkills;
                 @Skills.performed -= instance.OnSkills;
                 @Skills.canceled -= instance.OnSkills;
+                @Up.started -= instance.OnUp;
+                @Up.performed -= instance.OnUp;
+                @Up.canceled -= instance.OnUp;
+                @Down.started -= instance.OnDown;
+                @Down.performed -= instance.OnDown;
+                @Down.canceled -= instance.OnDown;
+                @Left.started -= instance.OnLeft;
+                @Left.performed -= instance.OnLeft;
+                @Left.canceled -= instance.OnLeft;
+                @Right.started -= instance.OnRight;
+                @Right.performed -= instance.OnRight;
+                @Right.canceled -= instance.OnRight;
             }
 
             /// <summary>
@@ -933,6 +1149,34 @@ namespace InfiniteVoidRPG
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnSkills(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Up" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnUp(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Down" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnDown(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Left" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnLeft(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Right" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnRight(InputAction.CallbackContext context);
         }
     }
 }

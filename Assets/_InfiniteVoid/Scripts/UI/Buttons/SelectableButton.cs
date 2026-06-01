@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using DG.Tweening;
 using R3;
 using UnityEngine;
 
@@ -12,13 +11,15 @@ namespace UI.Buttons
         {
             public Action<bool> SelectAction;
             public Action PressAction;
+            public Action HoldStartAction;
+            public Action HoldStopAction;
             public Func<NavigationDirection, SelectableButton> ChooseNeighbourAction;
         }
 
         public Subject<SelectableButton> OnSelect { get; private set; } = new();
         public Subject<SelectableButton> OnUnselect { get; private set; } = new();
 
-        private SelectableButtonsContainer _parentContainer;
+        protected SelectableButtonsContainer _parentContainer;
         private Dictionary<NavigationDirection, SelectableButton> _neighbourButtons = new()
         {
             { NavigationDirection.Left, null },
@@ -33,17 +34,10 @@ namespace UI.Buttons
 
             MapNeighbours(buttons);
 
-            var context = new Context
-            {
-                SelectAction = ChangeVisual,
-                PressAction = HandleOnPointerClick,
-                ChooseNeighbourAction = GetNeighbour
-            };
-
-            return context;
+            return CreateContext();
         }
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             if (_parentContainer == null) ChangeVisual(false);
         }
@@ -66,6 +60,18 @@ namespace UI.Buttons
             if (_parentContainer != null && !_parentContainer.Interactable) return;
 
             base.HandleOnPointerClick();
+        }
+
+        protected virtual Context CreateContext()
+        {
+            return new Context
+            {
+                SelectAction = ChangeVisual,
+                PressAction = HandleOnPointerClick,
+                HoldStartAction = () => { },
+                HoldStopAction = () => { },
+                ChooseNeighbourAction = GetNeighbour
+            };
         }
 
         #region Neighbours Handler
@@ -149,7 +155,7 @@ namespace UI.Buttons
             }
         }
 
-        private SelectableButton GetNeighbour(NavigationDirection direction)
+        protected virtual SelectableButton GetNeighbour(NavigationDirection direction)
         {
             return _neighbourButtons[direction];
         }
