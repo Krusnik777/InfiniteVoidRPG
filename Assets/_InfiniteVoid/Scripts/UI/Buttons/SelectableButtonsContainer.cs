@@ -70,8 +70,8 @@ namespace UI.Buttons
 
             _inputDisposables = new()
             {
-                gameInputService.OnUISubmitPressed.Subscribe(_ => PressActiveButton()),
-                gameInputService.OnUIMovePressed.Subscribe(input =>
+                gameInputService.OnSelectablesSubmitPressed.Subscribe(_ => PressActiveButton()),
+                gameInputService.OnSelectablesMovePressed.Subscribe(input =>
                 {
                     var direction = NavigationDirection.Left;
 

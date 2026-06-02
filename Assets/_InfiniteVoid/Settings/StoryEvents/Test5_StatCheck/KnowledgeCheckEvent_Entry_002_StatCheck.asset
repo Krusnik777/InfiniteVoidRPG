@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88024d797579ff545907ec3d74b1a3a9, type: 3}
+  m_Name: KnowledgeCheckEvent_Entry_002_StatCheck
+  m_EditorClassIdentifier: Assembly-CSharp::InfiniteVoidRPG.Game.StoryEvents.StatCheckEntry
+  <ID>k__BackingField: KnowledgeCheckEvent_Entry_002_StatCheck
+  <HeaderImage>k__BackingField: {fileID: 0}
+  <Condition>k__BackingField:
+    <StatId>k__BackingField: knowledge
+    <Value>k__BackingField: 20
+  <SuccessOutcome>k__BackingField: {fileID: 11400000, guid: 4aa4bbafd4fde3c4a89ca0cd5e2f9726, type: 2}
+  <FailureOutcome>k__BackingField: {fileID: 11400000, guid: c328941380191e8498d9396839fb17e8, type: 2}

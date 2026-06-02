@@ -8,8 +8,8 @@ namespace InfiniteVoidRPG.Game.Services
 {
     public class GameInputService : IDisposable
     {
-        public Subject<Unit> OnUISubmitPressed { get; private set;} = new();
-        public Subject<Vector2> OnUIMovePressed { get; private set;} = new();
+        public Subject<Unit> OnSelectablesSubmitPressed { get; private set;} = new();
+        public Subject<Vector2> OnSelectablesMovePressed { get; private set;} = new();
 
         private GameInput _gameInput;
         public InputActionAsset ActionsAsset => _gameInput.asset;
@@ -27,14 +27,14 @@ namespace InfiniteVoidRPG.Game.Services
 
         private void OnSelectablesSubmit(InputAction.CallbackContext context)
         {
-            OnUISubmitPressed?.OnNext(Unit.Default);
+            OnSelectablesSubmitPressed?.OnNext(Unit.Default);
         }
 
         private void OnSelectablesMove(InputAction.CallbackContext context)
         {
             var value = _gameInput.Selectables.Move.ReadValue<Vector2>();
 
-            OnUIMovePressed?.OnNext(value);
+            OnSelectablesMovePressed?.OnNext(value);
         }
 
         public void Dispose()

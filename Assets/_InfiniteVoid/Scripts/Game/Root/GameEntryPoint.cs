@@ -56,6 +56,12 @@ namespace InfiniteVoidRPG.Game.Root
 
             var gameInputService = new GameInputService();
             _rootContainer.RegisterInstance(gameInputService);
+
+            var storyEventsProvider = new StoryEventsProvider();
+            _rootContainer.RegisterInstance(storyEventsProvider);
+            
+            var storyEventsController = new StoryEventsController(gameInputService);
+            _rootContainer.RegisterInstance(storyEventsController);
         }
 
         private /*async*/ void RunGame()

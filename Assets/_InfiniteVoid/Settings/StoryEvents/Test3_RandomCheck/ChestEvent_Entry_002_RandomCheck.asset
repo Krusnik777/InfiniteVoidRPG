@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60619b122466ce4408fb9276d511c30a, type: 3}
+  m_Name: ChestEvent_Entry_002_RandomCheck
+  m_EditorClassIdentifier: Assembly-CSharp::InfiniteVoidRPG.Game.StoryEvents.RandomCheckEntry
+  <ID>k__BackingField: ChestEvent_Entry_002_RandomCheck
+  <HeaderImage>k__BackingField: {fileID: 0}
+  <Condition>k__BackingField:
+    <StatId>k__BackingField: luck
+    <Value>k__BackingField: 10
+  <BigSuccessOutcome>k__BackingField: {fileID: 11400000, guid: 319b7880d74e7b64fa259df83a692cfe, type: 2}
+  <SuccessOutcome>k__BackingField: {fileID: 11400000, guid: 41585bfae85dfd2408306f4df13466e5, type: 2}
+  <FailureOutcome>k__BackingField: {fileID: 11400000, guid: e5b5ebf0d6ca31841b205aa1fbdb9da0, type: 2}
+  <BigFailureOutcome>k__BackingField: {fileID: 11400000, guid: 33536032629dc534f90b3eb46f14b242, type: 2}
