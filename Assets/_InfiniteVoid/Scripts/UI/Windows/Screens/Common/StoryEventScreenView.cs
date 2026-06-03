@@ -12,5 +12,7 @@ namespace InfiniteVoidRPG.UI.Common
         [field: SerializeField] public TMP_Text MessageText { get; private set; }
         [field: SerializeField] public SelectableButtonsContainer ButtonsContainer { get; private set; }
         [field: SerializeField] public SelectableButton[] Buttons { get; private set; }
+        [field: SerializeField] public UIRandomRoll RandomRoll { get; private set; }
+        [field: SerializeField] public UISpinSprites SpinSprites { get; private set; }
     }
 }

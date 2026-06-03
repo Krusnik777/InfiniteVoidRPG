@@ -45,7 +45,9 @@ namespace InfiniteVoidRPG.Game.StoryEvents
             _lineTypeListenerDisposable = _currentScreen.PlayLine(currentLine).Subscribe(_ => SubscribeEntryUpdateToSubmitPressed());
         }
 
-        protected void SubscribeEntryUpdateToSubmitPressed()
+        protected void SubscribeEntryUpdateToSubmitPressed() => SubcribeToSubmitPressed(UpdateEntry);
+
+        protected void SubcribeToSubmitPressed(Action action)
         {
             _lineTypeListenerDisposable?.Dispose();
             _submitPressListenerDisposable?.Dispose();
@@ -54,7 +56,7 @@ namespace InfiniteVoidRPG.Game.StoryEvents
             {
                 _submitPressListenerDisposable?.Dispose();
 
-                UpdateEntry();
+                action?.Invoke();
             });
         }
     }

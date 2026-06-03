@@ -15,3 +15,6 @@ MonoBehaviour:
   <StoryEvents>k__BackingField:
   - {fileID: 11400000, guid: 512f796841ad4834099bbf430f133da0, type: 2}
   - {fileID: 11400000, guid: 78b2347b07605114e84d4380ec2b7005, type: 2}
+  - {fileID: 11400000, guid: ffc13711d00176e4e8b9df837f47b448, type: 2}
+  - {fileID: 11400000, guid: 9eaf48b4424084245874eec011a99cf3, type: 2}
+  - {fileID: 11400000, guid: 352ac413b28f4b742ab782c4e2432916, type: 2}

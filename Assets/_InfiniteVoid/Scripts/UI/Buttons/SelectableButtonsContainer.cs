@@ -43,12 +43,21 @@ namespace UI.Buttons
             _inputDisposables?.Dispose();
         }
 
-        public void Init()
+        public void Init(bool activateFirstButton = true, bool clearButtons = true)
         {
             _disposables?.Dispose();
 
             _buttonsMap = new();
             _disposables = new();
+
+            if (clearButtons)
+            {
+                for (int i = 0; i < m_buttons.Length; i++)
+                {
+                    var button = m_buttons[i];
+                    button.ClearNeighbours();
+                }
+            }
 
             for (int i = 0; i < m_buttons.Length; i++)
             {
@@ -60,8 +69,15 @@ namespace UI.Buttons
                 _disposables.Add(button.OnSelect.Subscribe(OnButtonSelect));
             }
 
-            _activeButton = m_buttons[0];
-            _buttonsMap[_activeButton].SelectAction(true);
+            if (activateFirstButton)
+            {
+                _activeButton = m_buttons[0];
+                _buttonsMap[_activeButton].SelectAction(true);
+            }
+            else
+            {
+                _activeButton = null;
+            }
         }
 
         public void EnableInputs(GameInputService gameInputService)

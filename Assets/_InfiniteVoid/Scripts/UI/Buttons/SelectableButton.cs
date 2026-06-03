@@ -37,6 +37,17 @@ namespace UI.Buttons
             return CreateContext();
         }
 
+        public void ClearNeighbours()
+        {
+            _neighbourButtons = new()
+            {
+                { NavigationDirection.Left, null },
+                { NavigationDirection.Right, null },
+                { NavigationDirection.Up, null },
+                { NavigationDirection.Down, null }
+            };
+        }
+
         protected virtual void OnEnable()
         {
             if (_parentContainer == null) ChangeVisual(false);
@@ -88,6 +99,8 @@ namespace UI.Buttons
 
         private SelectableButton FindNeighbour(SelectableButton[] buttons, NavigationDirection direction, bool ignoreMapped)
         {
+            if (!gameObject.activeSelf) return null;
+
             if (ignoreMapped && _neighbourButtons[direction] != null) return _neighbourButtons[direction];
 
             var currentPos = transform.localPosition;
@@ -118,7 +131,8 @@ namespace UI.Buttons
                 var button = buttons[i];
 
                 if (button == this) continue;
-                if (!button.Interactable || !button.gameObject.activeInHierarchy) continue;
+
+                if (!button.Interactable || !button.gameObject.activeSelf) continue;
 
                 var targetPos = button.transform.localPosition;
 
@@ -128,7 +142,7 @@ namespace UI.Buttons
                 float deltaY = Mathf.Abs(targetPos.y - currentPos.y);
                 float score = deltaX * weight.x + deltaY * weight.y;
 
-                if (score < bestScore/* - 0.001f*/)
+                if (score < bestScore - 0.001f)
                 {
                     bestScore = score;
                     finded = button;
@@ -140,8 +154,6 @@ namespace UI.Buttons
 
         private void AddToNeighbours(SelectableButton neighbour, NavigationDirection direction)
         {
-            if (_neighbourButtons[direction] != null) return;
-
             _neighbourButtons[direction] = neighbour;
 
             if (neighbour == null) return;

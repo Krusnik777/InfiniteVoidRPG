@@ -2,13 +2,11 @@ using System;
 using InfiniteVoidRPG.Game.StoryEvents;
 using InfiniteVoidRPG.UI.Common;
 using R3;
-using UnityEngine;
 
 namespace InfiniteVoidRPG.Game.Services
 {
     public class StoryEventsController : IDisposable
     {
-        private GameInputService _gameInputService;
         private StoryEventEntryHandlerFactory _storyEventEntryHandlerFactory;
         
         private StoryEventScreen _currentScreen;
@@ -19,15 +17,18 @@ namespace InfiniteVoidRPG.Game.Services
 
         private Subject<string> _onStoryEventEnd;
 
+        private IDisposable _handlerReplacedListenerDisposable;
+
         public StoryEventsController(GameInputService gameInputService)
         {
-            _gameInputService = gameInputService;
             _storyEventEntryHandlerFactory = new(gameInputService);
+
+            _handlerReplacedListenerDisposable = _storyEventEntryHandlerFactory.OnHandlerReplaced.Subscribe(OnStoryEventHandlerReplaced);
         }
 
         public void Dispose()
         {
-            
+            _handlerReplacedListenerDisposable?.Dispose();
         }
 
         public Observable<string> PlayEvent(StoryEventScreen screen, StoryEventConfig storyEvent)
@@ -59,6 +60,13 @@ namespace InfiniteVoidRPG.Game.Services
 
                 HandleNextStoryEvent();
             });
+        }
+
+        private void OnStoryEventHandlerReplaced(StoryEventEntryHandler handler)
+        {
+            _currentEntryHandler?.Dispose();
+
+            _currentEntryHandler = handler;
         }
     }
 }

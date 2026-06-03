@@ -16,6 +16,9 @@ MonoBehaviour:
   <HeaderImage>k__BackingField: {fileID: 0}
   <Phrase>k__BackingField: "\u041D\u0430 \u0434\u043E\u0440\u043E\u0433\u0435 \u0432\u044B..."
   <Outcomes>k__BackingField:
-  - {fileID: 11400000, guid: 2b62ce0068d92de438ecbf3eb706c37b, type: 2}
-  - {fileID: 11400000, guid: 1fef1718a64e55c4fa14baebd27ef330, type: 2}
-  - {fileID: 11400000, guid: 0aaa6c7abf4a65c41be0568fd1f63c5c, type: 2}
+  - Entry: {fileID: 11400000, guid: 2b62ce0068d92de438ecbf3eb706c37b, type: 2}
+    Image: {fileID: 21300000, guid: 1c91680cdca179c46b5d2ea0576413eb, type: 3}
+  - Entry: {fileID: 11400000, guid: 1fef1718a64e55c4fa14baebd27ef330, type: 2}
+    Image: {fileID: 21300000, guid: c23657f8fe4777445aebb324c9f0a819, type: 3}
+  - Entry: {fileID: 11400000, guid: 0aaa6c7abf4a65c41be0568fd1f63c5c, type: 2}
+    Image: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
