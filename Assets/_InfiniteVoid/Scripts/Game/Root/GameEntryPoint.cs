@@ -62,11 +62,16 @@ namespace InfiniteVoidRPG.Game.Root
             
             var storyEventsController = new StoryEventsController(gameInputService);
             _rootContainer.RegisterInstance(storyEventsController);
+
+            var globalDataProvider = new GlobalDataProvider();
+            _rootContainer.RegisterInstance(globalDataProvider);
+            var gameDataProvider = new GameDataProvider();
+            _rootContainer.RegisterInstance(gameDataProvider);
         }
 
-        private /*async*/ void RunGame()
+        private async void RunGame()
         {
-            // loading some async settings
+            await  _rootContainer.Resolve<GlobalDataProvider>().LoadData();
 
             #if UNITY_EDITOR
 
@@ -108,8 +113,6 @@ namespace InfiniteVoidRPG.Game.Root
 
             yield return new WaitForSeconds(1);
 
-            // Loading Saves for scene if has any
-
             var sceneEntryPoint = Object.FindFirstObjectByType<EntryPoint>();
             var sceneContainer = _cachedSceneContainer = new DIContainer(_rootContainer);
             sceneEntryPoint.Run(sceneContainer).Subscribe(exitTag =>
@@ -140,8 +143,6 @@ namespace InfiniteVoidRPG.Game.Root
             yield return LoadScene(Scenes.MAIN_MENU);
 
             yield return new WaitForSeconds(1);
-
-            // Loading Saves for scene if has any and is needed
 
             var sceneEntryPoint = Object.FindFirstObjectByType<EntryPoint>();
             var sceneContainer = _cachedSceneContainer = new DIContainer(_rootContainer);
