@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using R3;
 using DI;
@@ -42,36 +43,35 @@ namespace InfiniteVoidRPG.Game.Root
             Object.DontDestroyOnLoad(_uiRoot.gameObject);
             _rootContainer.RegisterInstance(_uiRoot);
 
-            var audioSystemContainer = new GameObject("[AUDIO]").AddComponent<AudioListener>();
-            var soundsContainer = new GameObject("[SOUNDS]").AddComponent<AudioSource>();
-            soundsContainer.transform.SetParent(audioSystemContainer.transform);
-            //var loopSoundsContainer = new GameObject("[SOUNDS_LOOP]").AddComponent<AudioSource>();
-            //loopSoundsContainer.transform.SetParent(audioSystemContainer.transform);
-            AudioSource bgmContainer = new GameObject("[BACKGROUND_MUSIC]").AddComponent<AudioSource>();
-            bgmContainer.transform.SetParent(audioSystemContainer.transform);
-            Object.DontDestroyOnLoad(audioSystemContainer);
-
-            var inputDeviceDetectService = new InputDeviceDetectService();
-            _rootContainer.RegisterInstance(inputDeviceDetectService);
-
-            var gameInputService = new GameInputService();
-            _rootContainer.RegisterInstance(gameInputService);
-
-            var storyEventsProvider = new StoryEventsProvider();
-            _rootContainer.RegisterInstance(storyEventsProvider);
-            
-            var storyEventsController = new StoryEventsController(gameInputService);
-            _rootContainer.RegisterInstance(storyEventsController);
-
-            var globalDataProvider = new GlobalDataProvider();
-            _rootContainer.RegisterInstance(globalDataProvider);
-            var gameDataProvider = new GameDataProvider();
-            _rootContainer.RegisterInstance(gameDataProvider);
+            SetupAudioService();
+            SetupInputServices();
+            SetupStoryEventsServices();
+            SetupDataProviders();
+            SetupApplicationControlService();
         }
 
         private async void RunGame()
         {
-            await  _rootContainer.Resolve<GlobalDataProvider>().LoadData();
+            var applicationSettingsProvider = _rootContainer.Resolve<ApplicationSettingsProvider>();
+
+            // UI Show "Loading Application Data..."
+
+            var applicationSettingsData = await applicationSettingsProvider.LoadData();
+
+            if (applicationSettingsData == null)
+            {
+                // UI Show "No Created Application Data Finded...";
+                // UI Show "Creating Application Data...";
+
+                applicationSettingsData = await applicationSettingsProvider.CreateData();
+
+                // UI Show "Application Data Created..."; ?
+
+                // Play Settings Setup - need await
+            }
+
+            // Apply Settings
+            _rootContainer.Resolve<ApplicationControlService>().Initialize();
 
             #if UNITY_EDITOR
 
@@ -159,5 +159,71 @@ namespace InfiniteVoidRPG.Game.Root
         {
             yield return SceneManager.LoadSceneAsync(sceneName);
         }
+
+        #region Services Setup Methods
+
+        private void SetupAudioService()
+        {
+            var mixer = Resources.Load<AudioMixer>("AudioMixer");
+            var sfxGroup = mixer.FindMatchingGroups("SFX")[0];
+            var bgmGroup = mixer.FindMatchingGroups("BGM")[0];
+
+            var audioSystemContainer = new GameObject("[AUDIO]").AddComponent<AudioListener>();
+
+            var soundsContainer = new GameObject("[SOUNDS]").AddComponent<AudioSource>();
+            soundsContainer.outputAudioMixerGroup = sfxGroup;
+            soundsContainer.transform.SetParent(audioSystemContainer.transform);
+            //var loopSoundsContainer = new GameObject("[SOUNDS_LOOP]").AddComponent<AudioSource>();
+            //loopSoundsContainer.outputAudioMixerGroup = sfxGroup;
+            //loopSoundsContainer.transform.SetParent(audioSystemContainer.transform);
+
+            AudioSource bgmContainer = new GameObject("[BACKGROUND_MUSIC]").AddComponent<AudioSource>();
+            bgmContainer.outputAudioMixerGroup = bgmGroup;
+            bgmContainer.transform.SetParent(audioSystemContainer.transform);
+
+            Object.DontDestroyOnLoad(audioSystemContainer);
+
+            // AudioService init
+        }
+
+        private void SetupInputServices()
+        {
+            var inputDeviceDetectService = new InputDeviceDetectService();
+            _rootContainer.RegisterInstance(inputDeviceDetectService);
+
+            var gameInputService = new GameInputService();
+            _rootContainer.RegisterInstance(gameInputService);
+        }
+
+        private void SetupStoryEventsServices()
+        {
+            var storyEventsProvider = new StoryEventsProvider();
+            _rootContainer.RegisterInstance(storyEventsProvider);
+
+            var storyEventsController = new StoryEventsController(_rootContainer.Resolve<GameInputService>());
+            _rootContainer.RegisterInstance(storyEventsController);
+        }
+
+        private void SetupDataProviders()
+        {
+            var applicationSettingsProvider = new ApplicationSettingsProvider();
+            _rootContainer.RegisterInstance(applicationSettingsProvider);
+
+            var gameDataProvider = new GameDataProvider();
+            _rootContainer.RegisterInstance(gameDataProvider);
+        }
+
+        private void SetupApplicationControlService()
+        {
+            var audioMixer = Resources.Load<AudioMixer>("AudioMixer");
+            var applicationSettingsProvider = _rootContainer.Resolve<ApplicationSettingsProvider>();
+
+            var graphicsController = new Settings.GraphicsController(applicationSettingsProvider.DefaultApplicationSettings);
+            var audioMixerController = new Settings.AudioMixerController(audioMixer, applicationSettingsProvider.DefaultApplicationSettings);
+            var applicationControlService = new ApplicationControlService(applicationSettingsProvider, graphicsController, audioMixerController);
+            _rootContainer.RegisterInstance(applicationControlService);
+        }
+
+        #endregion
     }
 }

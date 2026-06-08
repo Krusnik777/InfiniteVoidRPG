@@ -48,7 +48,7 @@ namespace Localization
             _instance.currentLanguage.Value = language;
         }
 
-        private static void Init()
+        public static void SetLanguageBySystem()
         {
             var systemLang = Application.systemLanguage;
 
@@ -58,7 +58,11 @@ namespace Localization
                 SystemLanguage.Russian => LocalizationLanguage.Russian,
                 _ => LocalizationLanguage.English
             });
+        }
 
+        private static void Init()
+        {
+            SetLanguageBySystem();
             CreateLocalizationTables();
         }
 
