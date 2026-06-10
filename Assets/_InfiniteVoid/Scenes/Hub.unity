@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1517bbc1cf612b04a9251e132053ba81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InfiniteVoidRPG.Game.EntryPoints.MainMenuEntryPoint
+  m_sceneUIRootPrefab: {fileID: 5971873380266936398, guid: ff3de4fa444055844a763c99ae4c7a74, type: 3}
 --- !u!4 &277865316
 Transform:
   m_ObjectHideFlags: 0

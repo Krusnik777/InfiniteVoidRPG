@@ -22,9 +22,9 @@ namespace InfiniteVoidRPG.Game.StateMachines
 
         public void Enter()
         {
-            var gameplayUIController = _sceneContainer.Resolve<GameplayUIController>();
+            var gameplayUIWindowsProvider = _sceneContainer.Resolve<UIWindowsProvider>();
 
-            var screen = gameplayUIController.ShowScreen<ForkPathScreen>();
+            var screen = gameplayUIWindowsProvider.ShowScreen<ForkPathScreen>();
             screen.Initialize(_sceneContainer.Resolve<GameInputService>());
 
             _disposable = screen.OnChoseMade.Subscribe(result =>

@@ -23,9 +23,9 @@ namespace InfiniteVoidRPG.Game.StateMachines.Battle
 
         public void Enter()
         {
-            var gameplayUIController = _sceneContainer.Resolve<GameplayUIController>();
+            var gameplayUIWindowsProvider = _sceneContainer.Resolve<UIWindowsProvider>();
 
-            var screen = gameplayUIController.GetScreen<BattleScreen>();
+            var screen = gameplayUIWindowsProvider.GetScreen<BattleScreen>();
             screen.HideButtons();
 
             _disposable = R3Extensions.DelayedCall(1f, () => _expeditionStateMachine.SetState<ForkPathState>());

@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/_InfiniteVoid/Scenes/Bootstrap.unity
     guid: 242dc367f974fb94187dbe3487425edf
   - enabled: 1
-    path: Assets/_InfiniteVoid/Scenes/MainMenu.unity
+    path: Assets/_InfiniteVoid/Scenes/Hub.unity
     guid: feadbd26bef7656479776412fed00744
   - enabled: 1
     path: Assets/_InfiniteVoid/Scenes/Gameplay.unity

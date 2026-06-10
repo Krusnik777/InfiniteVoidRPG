@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using InfiniteVoidRPG.UI;
 
-namespace InfiniteVoidRPG.Game.Gameplay
+namespace InfiniteVoidRPG.Game
 {
-    public class GameplayUIController : IDisposable
+    public class UIWindowsProvider : IDisposable
     {
-        private GameplayWindowsFactory _windowsFactory;
+        private IWindowsFactory _windowsFactory;
 
         private Dictionary<Type, Screen> _createdScreensMap;
         private Screen _activeScreen;
 
-        public GameplayUIController(GameplayWindowsFactory windowsFactory)
+        public UIWindowsProvider(IWindowsFactory windowsFactory)
         {
             _windowsFactory = windowsFactory;
 

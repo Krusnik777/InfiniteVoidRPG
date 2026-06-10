@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace InfiniteVoidRPG.UI.Gameplay
+namespace InfiniteVoidRPG.UI
 {
-    public class UIGameplayRootView : MonoBehaviour
+    public class UISceneRootView : MonoBehaviour
     {
         [field: SerializeField] public Transform ScreensTransform { get; private set; }
         [field: SerializeField] public Transform PopupsTransform { get; private set; }

@@ -367,6 +367,15 @@ namespace InfiniteVoidRPG
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Settings"",
+                    ""type"": ""Button"",
+                    ""id"": ""650cce6d-6a42-4286-a9ab-fdf2f5a127b2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -589,6 +598,28 @@ namespace InfiniteVoidRPG
                     ""action"": ""Right"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a6c96a42-446e-45aa-b528-5020492f6329"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Settings"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""324feb1b-233c-4b05-984f-ab9eb9fc8436"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Settings"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -670,6 +701,7 @@ namespace InfiniteVoidRPG
             m_InputButtons_Down = m_InputButtons.FindAction("Down", throwIfNotFound: true);
             m_InputButtons_Left = m_InputButtons.FindAction("Left", throwIfNotFound: true);
             m_InputButtons_Right = m_InputButtons.FindAction("Right", throwIfNotFound: true);
+            m_InputButtons_Settings = m_InputButtons.FindAction("Settings", throwIfNotFound: true);
         }
 
         ~@GameInput()
@@ -866,6 +898,7 @@ namespace InfiniteVoidRPG
         private readonly InputAction m_InputButtons_Down;
         private readonly InputAction m_InputButtons_Left;
         private readonly InputAction m_InputButtons_Right;
+        private readonly InputAction m_InputButtons_Settings;
         /// <summary>
         /// Provides access to input actions defined in input action map "InputButtons".
         /// </summary>
@@ -909,6 +942,10 @@ namespace InfiniteVoidRPG
             /// Provides access to the underlying input action "InputButtons/Right".
             /// </summary>
             public InputAction @Right => m_Wrapper.m_InputButtons_Right;
+            /// <summary>
+            /// Provides access to the underlying input action "InputButtons/Settings".
+            /// </summary>
+            public InputAction @Settings => m_Wrapper.m_InputButtons_Settings;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -959,6 +996,9 @@ namespace InfiniteVoidRPG
                 @Right.started += instance.OnRight;
                 @Right.performed += instance.OnRight;
                 @Right.canceled += instance.OnRight;
+                @Settings.started += instance.OnSettings;
+                @Settings.performed += instance.OnSettings;
+                @Settings.canceled += instance.OnSettings;
             }
 
             /// <summary>
@@ -994,6 +1034,9 @@ namespace InfiniteVoidRPG
                 @Right.started -= instance.OnRight;
                 @Right.performed -= instance.OnRight;
                 @Right.canceled -= instance.OnRight;
+                @Settings.started -= instance.OnSettings;
+                @Settings.performed -= instance.OnSettings;
+                @Settings.canceled -= instance.OnSettings;
             }
 
             /// <summary>
@@ -1177,6 +1220,13 @@ namespace InfiniteVoidRPG
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnRight(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Settings" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnSettings(InputAction.CallbackContext context);
         }
     }
 }

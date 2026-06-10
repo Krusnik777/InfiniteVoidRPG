@@ -1,22 +1,22 @@
 using System;
 using InfiniteVoidRPG.UI;
 using InfiniteVoidRPG.UI.Common;
-using InfiniteVoidRPG.UI.Gameplay;
+using InfiniteVoidRPG.UI.Hub;
 using UnityEngine;
 using Screen = InfiniteVoidRPG.UI.Screen;
 
-namespace InfiniteVoidRPG.Game.Gameplay
+namespace InfiniteVoidRPG.Game.Hub
 {
-    public class GameplayWindowsFactory : IWindowsFactory, IDisposable
+    public class HubWindowsFactory : IWindowsFactory, IDisposable
     {
         private string _storyEventScreenViewName = "StoryEventScreenView";
-        private string _forkPathScreenViewName = "ForkPathScreenView";
-        private string _battleScreenViewName = "BattleScreenView";
+        private string _preparationScreenViewName = "PreparationScreenView";
+        private string _upgradeTreeScreenViewName = "UpgradeTreeScreenView";
 
         private Transform _screensHolder;
         private Transform _popupsHolder;
 
-        public GameplayWindowsFactory(Transform screensHolder, Transform popupsHolder)
+        public HubWindowsFactory(Transform screensHolder, Transform popupsHolder)
         {
             _screensHolder = screensHolder;
             _popupsHolder = popupsHolder;
@@ -36,20 +36,20 @@ namespace InfiniteVoidRPG.Game.Gameplay
                 return new StoryEventScreen(view) as T;
             }
 
-            if (t == typeof(ForkPathScreen))
+            if (t == typeof(PreparationScreen))
             {
-                var prefabPath = GetGameplayUIScreenPrefabPath(_forkPathScreenViewName);
-                var view = InstantiateWindowView<ForkPathScreenView>(prefabPath);
+                var prefabPath = GetHubUIScreenPrefabPath(_preparationScreenViewName);
+                var view = InstantiateWindowView<PreparationScreenView>(prefabPath);
 
-                return new ForkPathScreen(view) as T;
+                return new PreparationScreen(view) as T;
             }
 
-            if (t == typeof(BattleScreen))
+            if (t == typeof(UpgradeTreeScreen))
             {
-                var prefabPath = GetGameplayUIScreenPrefabPath(_battleScreenViewName);
-                var view = InstantiateWindowView<BattleScreenView>(prefabPath);
+                var prefabPath = GetHubUIScreenPrefabPath(_upgradeTreeScreenViewName);
+                var view = InstantiateWindowView<UpgradeTreeScreenView>(prefabPath);
 
-                return new BattleScreen(view) as T;
+                return new UpgradeTreeScreen(view) as T;
             }
 
             throw new ArgumentNullException($"Unsupported class - type of: {t}");
@@ -68,9 +68,9 @@ namespace InfiniteVoidRPG.Game.Gameplay
             return $"Prefabs/UI/Common/Screens/{viewName}";
         }
 
-        private string GetGameplayUIScreenPrefabPath(string viewName)
+        private string GetHubUIScreenPrefabPath(string viewName)
         {
-            return $"Prefabs/UI/Gameplay/Screens/{viewName}";
+            return $"Prefabs/UI/Hub/Screens/{viewName}";
         }
     }
 }

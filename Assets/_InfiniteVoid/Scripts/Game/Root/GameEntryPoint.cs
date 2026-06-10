@@ -85,9 +85,9 @@ namespace InfiniteVoidRPG.Game.Root
                 return;
             }
 
-            if (sceneName == Scenes.MAIN_MENU)
+            if (sceneName == Scenes.HUB)
             {
-                _coroutines.StartCoroutine(LoadAndStartMainMenu());
+                _coroutines.StartCoroutine(LoadAndStartHub());
 
                 return;
             }
@@ -99,7 +99,7 @@ namespace InfiniteVoidRPG.Game.Root
 
             #endif
 
-            _coroutines.StartCoroutine(LoadAndStartMainMenu());
+            _coroutines.StartCoroutine(LoadAndStartHub());
             //_coroutines.StartCoroutine(LoadAndStartGameplay());
         }
 
@@ -117,30 +117,27 @@ namespace InfiniteVoidRPG.Game.Root
             var sceneContainer = _cachedSceneContainer = new DIContainer(_rootContainer);
             sceneEntryPoint.Run(sceneContainer).Subscribe(exitTag =>
             {
+                #if PLATFORM_STANDALONE_WIN && !UNITY_EDITOR
                 if (exitTag == "FINISH")
                 {
-                    #if PLATFORM_STANDALONE_WIN && !UNITY_EDITOR
                     Application.Quit();
-                    #else
-                    _coroutines.StartCoroutine(LoadAndStartGameplay());
-                    #endif
-
                     return;
                 }
+                #endif
 
-                _coroutines.StartCoroutine(LoadAndStartMainMenu());
+                if (exitTag == Scenes.HUB) _coroutines.StartCoroutine(LoadAndStartHub());
             });
 
             _uiRoot.HideLoadingScreen();
         }
 
-        private IEnumerator LoadAndStartMainMenu(/*MainMenuEnterParams enterParams = null*/)
+        private IEnumerator LoadAndStartHub(/*HubEnterParams enterParams = null*/)
         {
             _uiRoot.ShowLoadingScreen();
             _cachedSceneContainer?.Dispose();
 
             yield return LoadScene(Scenes.BOOTSTRAP);
-            yield return LoadScene(Scenes.MAIN_MENU);
+            yield return LoadScene(Scenes.HUB);
 
             yield return new WaitForSeconds(1);
 
@@ -148,6 +145,14 @@ namespace InfiniteVoidRPG.Game.Root
             var sceneContainer = _cachedSceneContainer = new DIContainer(_rootContainer);
             sceneEntryPoint.Run(sceneContainer).Subscribe(exitTag =>
             {
+                #if PLATFORM_STANDALONE_WIN && !UNITY_EDITOR
+                if (exitTag == "FINISH")
+                {
+                    Application.Quit();
+                    return;
+                }
+                #endif
+
                 if (exitTag == Scenes.GAMEPLAY) _coroutines.StartCoroutine(LoadAndStartGameplay());
                 //else Application.Quit();
             });

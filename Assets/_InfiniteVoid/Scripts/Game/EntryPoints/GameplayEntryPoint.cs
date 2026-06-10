@@ -2,7 +2,7 @@ using DI;
 using InfiniteVoidRPG.Game.Gameplay;
 using InfiniteVoidRPG.Game.Root;
 using InfiniteVoidRPG.Game.StateMachines;
-using InfiniteVoidRPG.UI.Gameplay;
+using InfiniteVoidRPG.UI;
 using R3;
 using UnityEngine;
 
@@ -10,7 +10,7 @@ namespace InfiniteVoidRPG.Game.EntryPoints
 {
     public class GameplayEntryPoint : EntryPoint
     {
-        [SerializeField] private UIGameplayRootView m_sceneUIRootPrefab;
+        [SerializeField] private UISceneRootView m_sceneUIRootPrefab;
 
         private Subject<string> _onEnd;
 
@@ -52,7 +52,7 @@ namespace InfiniteVoidRPG.Game.EntryPoints
             uiRoot.AttachSceneUI(uiSceneRoot.gameObject);
 
             var windowsFactory = new GameplayWindowsFactory(uiSceneRoot.ScreensTransform, uiSceneRoot.PopupsTransform);
-            sceneContainer.RegisterInstance(new GameplayUIController(windowsFactory));
+            sceneContainer.RegisterInstance(new UIWindowsProvider(windowsFactory));
             //sceneContainer.RegisterFactory(_ => new GameplayUIController(windowsFactory)).AsSingle();
         }
     }
