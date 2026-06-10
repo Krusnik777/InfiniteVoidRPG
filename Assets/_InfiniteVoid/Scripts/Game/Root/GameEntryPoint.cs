@@ -100,7 +100,6 @@ namespace InfiniteVoidRPG.Game.Root
             #endif
 
             _coroutines.StartCoroutine(LoadAndStartHub());
-            //_coroutines.StartCoroutine(LoadAndStartGameplay());
         }
 
         private IEnumerator LoadAndStartGameplay(/*GameplayEnterParams enterParams*/)
@@ -223,9 +222,9 @@ namespace InfiniteVoidRPG.Game.Root
             var audioMixer = Resources.Load<AudioMixer>("AudioMixer");
             var applicationSettingsProvider = _rootContainer.Resolve<ApplicationSettingsProvider>();
 
-            var graphicsController = new Settings.GraphicsController(applicationSettingsProvider.DefaultApplicationSettings);
-            var audioMixerController = new Settings.AudioMixerController(audioMixer, applicationSettingsProvider.DefaultApplicationSettings);
-            var applicationControlService = new ApplicationControlService(applicationSettingsProvider, graphicsController, audioMixerController);
+            var applicationControlService = new ApplicationControlService(applicationSettingsProvider, audioMixer, 
+                                                                          applicationSettingsProvider.DefaultApplicationSettings, 
+                                                                          applicationSettingsProvider.DefaultApplicationSettings);
             _rootContainer.RegisterInstance(applicationControlService);
         }
 

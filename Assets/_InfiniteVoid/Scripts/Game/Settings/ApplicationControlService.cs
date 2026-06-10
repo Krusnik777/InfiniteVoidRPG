@@ -1,78 +1,89 @@
 using InfiniteVoidRPG.Game.Data;
 using InfiniteVoidRPG.Game.Settings;
-using Localization;
+using R3;
+using UnityEngine;
+using UnityEngine.Audio;
 
 namespace InfiniteVoidRPG.Game.Services
 {
-    public class ApplicationControlService
+    public class ApplicationControlService : System.IDisposable
     {
-        private IApplicationSettingsDataHandler _applicationSettingsDataHandler;
-        private GraphicsController _graphicsController;
-        private AudioMixerController _audioMixerController;
+        private const string _sfxVolumeName = "SFXVolume";
+        private const string _bgmVolumeName = "BGMVolume";
 
-        public ApplicationControlService(IApplicationSettingsDataHandler applicationSettingsDataHandler, GraphicsController graphicsController, AudioMixerController audioMixerController)
+        public LanguageSetting LanguageSetting { get; private set; }
+
+        public SoundSetting SFXVolumeSetting { get; private set; }
+        public SoundSetting BGMVolumeSetting { get; private set; }
+
+        public VSyncSetting VSyncSetting { get; private set; }
+        public ResolutionSetting ResolutionSetting { get; private set; }
+        public ScreenModeSetting ScreenModeSetting { get; private set; }
+
+        private IApplicationSettingsDataHandler _applicationSettingsDataHandler;
+
+        private Subject<(FullScreenMode, bool)> _onScreenModeChange;
+        
+        public ApplicationControlService(IApplicationSettingsDataHandler applicationSettingsDataHandler, 
+                                         AudioMixer audioMixer, IAudioSettingsConfig _defaultSoundConfig, 
+                                         IGraphicsSettingsConfig _defaultGraphicsConfig)
         {
             _applicationSettingsDataHandler = applicationSettingsDataHandler;
-            _graphicsController = graphicsController;
-            _audioMixerController = audioMixerController;
+
+            LanguageSetting = new((int)Localization.LocalizationSystem.CurrentLanguage);
+            
+            SFXVolumeSetting = new(_sfxVolumeName, audioMixer, _defaultSoundConfig.SFXVolume);
+            BGMVolumeSetting = new(_bgmVolumeName, audioMixer, _defaultSoundConfig.BGMVolume);
+
+            _onScreenModeChange = new();
+
+            VSyncSetting = new(_defaultGraphicsConfig.VSyncEnabled);
+            ResolutionSetting = new(_defaultGraphicsConfig.Resolutions, _defaultGraphicsConfig.DefaultResolutionIndex, _onScreenModeChange);
+            ScreenModeSetting = new((int)_defaultGraphicsConfig.ScreenMode, _onScreenModeChange);
+        }
+
+        public void Dispose()
+        {
+            ResolutionSetting?.Dispose();
         }
 
         public void Initialize()
         {
-            LocalizationSystem.ChangeLanguage((LocalizationLanguage)_applicationSettingsDataHandler.Data.CurrentLanguageIndex);
+            LanguageSetting.SetValue(_applicationSettingsDataHandler.Data.CurrentLanguageIndex);
 
-            _graphicsController.SetVSync(_applicationSettingsDataHandler.Data.Graphics.VSyncState);
-            _graphicsController.SetScreenMode((ApplicationScreenMode)_applicationSettingsDataHandler.Data.Graphics.ScreenModeIndex, false);
-            _graphicsController.SetResolution(_applicationSettingsDataHandler.Data.Graphics.ResolutionIndex);
+            SFXVolumeSetting.SetValue(_applicationSettingsDataHandler.Data.Audio.SFXVolume);
+            BGMVolumeSetting.SetValue(_applicationSettingsDataHandler.Data.Audio.BGMVolume);
 
-            _audioMixerController.SetSFXValue(_applicationSettingsDataHandler.Data.Audio.SFXVolume);
-            _audioMixerController.SetBGMValue(_applicationSettingsDataHandler.Data.Audio.BGMVolume);
+            VSyncSetting.SetValue(_applicationSettingsDataHandler.Data.Graphics.VSyncState);
+            ScreenModeSetting.SetValue(_applicationSettingsDataHandler.Data.Graphics.ScreenModeIndex, false);
+            ResolutionSetting.SetValue(_applicationSettingsDataHandler.Data.Graphics.ResolutionIndex);
         }
 
         public void SaveSettings()
         {
+            SFXVolumeSetting.Save((value) => _applicationSettingsDataHandler.Data.Audio.SFXVolume = (int)value);
+            BGMVolumeSetting.Save((value) => _applicationSettingsDataHandler.Data.Audio.BGMVolume = (int)value);
+
+            VSyncSetting.Save((value) => _applicationSettingsDataHandler.Data.Graphics.VSyncState = (bool)value);
+            ScreenModeSetting.Save((value) => _applicationSettingsDataHandler.Data.Graphics.ScreenModeIndex = (int)value);
+            ResolutionSetting.Save((value) => _applicationSettingsDataHandler.Data.Graphics.ResolutionIndex = (int)value);
+
             _applicationSettingsDataHandler.SaveData();
         }
 
         public void ResetToDefaults()
         {
-            LocalizationSystem.SetLanguageBySystem();
+            LanguageSetting.ResetToDefault();
+            
+            SFXVolumeSetting.ResetToDefault();
+            BGMVolumeSetting.ResetToDefault();
 
-            _graphicsController.ResetToDefaults();
-            _audioMixerController.ResetToDefaults();
+            VSyncSetting.ResetToDefault();
+            ScreenModeSetting.ResetToDefault();
+            ResolutionSetting.ResetToDefault();
 
             _applicationSettingsDataHandler.ResetData();
             _applicationSettingsDataHandler.SaveData();
-        }
-
-        public void ApplySFXValueChange(int value)
-        {
-            _audioMixerController.SetSFXValue(value);
-            _applicationSettingsDataHandler.Data.Audio.SFXVolume = value;
-        }
-
-        public void ApplyBGMValueChange(int value)
-        {
-            _audioMixerController.SetBGMValue(value);
-            _applicationSettingsDataHandler.Data.Audio.BGMVolume = value;
-        }
-
-        public void ApplyVSyncChange(bool state)
-        {
-            _graphicsController.SetVSync(state);
-            _applicationSettingsDataHandler.Data.Graphics.VSyncState = state;
-        }
-
-        public void ApplyScreenModeChange(ApplicationScreenMode mode)
-        {
-            _graphicsController.SetScreenMode(mode);
-            _applicationSettingsDataHandler.Data.Graphics.ScreenModeIndex = (int)mode;
-        }
-
-        public void ApplyResolutionChange(int resolutionIndex)
-        {
-            _graphicsController.SetResolution(resolutionIndex);
-            _applicationSettingsDataHandler.Data.Graphics.ResolutionIndex = resolutionIndex;
         }
     }
 }

@@ -1,13 +1,20 @@
+using System;
 using System.Collections.Generic;
 
 namespace StateMachine
 {
-    public abstract class AbstractStateMachine : IStateMachine
+    public abstract class AbstractStateMachine : IStateMachine, IDisposable
     {
         protected Dictionary<System.Type, IState> _states;
 
         protected IState _currentState;
         protected IState _previousState;
+
+        public void Dispose()
+        {
+            _currentState?.Exit();
+            _currentState = null;
+        }
 
         public void SetState<T>() where T : class, IEnterableState
         {

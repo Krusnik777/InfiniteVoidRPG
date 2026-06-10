@@ -1,7 +1,6 @@
 using DI;
 using StateMachine;
 using R3;
-using InfiniteVoidRPG.Game.Gameplay;
 using InfiniteVoidRPG.UI.Gameplay;
 using InfiniteVoidRPG.Game.Services;
 
@@ -29,14 +28,28 @@ namespace InfiniteVoidRPG.Game.StateMachines
 
             _disposable = screen.OnChoseMade.Subscribe(result =>
             {
-                if (result == "backward") return;
+                if (result == "backward")
+                {
+                    var invoker = _sceneContainer.Resolve<EventInvoker>(Gameplay.GameplayStaticTags.HubReturner);
+                    invoker.InvokeBindedAction();
+                    return;
+                }
 
-                if (result == "left") _stateMachine.SetState<PlayEventState>();
-                if (result == "right") _stateMachine.SetState<BattleState>();
+                if (result == "left")
+                {
+                    _stateMachine.SetState<PlayEventState>();
+                    return;
+                }
+                if (result == "right")
+                {
+                    _stateMachine.SetState<BattleState>();
+                    return;
+                }
 
                 if (result == "forward")
                 {
                     UnityEngine.Debug.Log("PRESSED FORWARD");
+                    return;
                 }
             });
         }

@@ -12,18 +12,22 @@ namespace InfiniteVoidRPG.Game.EntryPoints
     {
         [SerializeField] private UISceneRootView m_sceneUIRootPrefab;
 
+        private ExpeditionStateMachine _stateMachine;
+
         private Subject<string> _onEnd;
 
         public override Observable<string> Run(DIContainer sceneContainer)
         {
             Debug.Log("ENTRY POINT: Started Gameplay");
+
+            _onEnd = new();
+
+            sceneContainer.RegisterInstance(GameplayStaticTags.HubReturner, new EventInvoker(ReturnToHub));
             
             SetupUI(sceneContainer);
 
-            var stateMachine = new ExpeditionStateMachine(sceneContainer);
-            stateMachine.SetState<ForkPathState>();
-
-            _onEnd = new();
+            _stateMachine = new ExpeditionStateMachine(sceneContainer);
+            _stateMachine.SetState<ForkPathState>();
 
             return _onEnd;
         }
@@ -40,9 +44,16 @@ namespace InfiniteVoidRPG.Game.EntryPoints
             _onEnd.OnNext("FINISH");
         }
 
+        private void ReturnToHub()
+        {
+            DisposeOfListeners();
+
+            _onEnd.OnNext(Scenes.HUB);
+        }
+
         private void DisposeOfListeners()
         {
-            
+            _stateMachine?.Dispose();
         }
 
         private void SetupUI(DIContainer sceneContainer)
