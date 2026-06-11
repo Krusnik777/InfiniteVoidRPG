@@ -8,7 +8,7 @@ namespace InfiniteVoidRPG.Game.Settings
         private readonly int _defaultModeIndex;
 
         private int _currentModeIndex;
-        private int _savedModeIndex;
+        private int _appliedModeIndex;
 
         private Subject<(FullScreenMode,bool)> _screenModeChange;
 
@@ -18,13 +18,13 @@ namespace InfiniteVoidRPG.Game.Settings
             _screenModeChange = screenModeChange;
 
             _currentModeIndex = _defaultModeIndex;
-            _savedModeIndex = _defaultModeIndex;
+            _appliedModeIndex = _defaultModeIndex;
         }
 
         public void SetValue(int index, bool needToUpdate)
         {
             _currentModeIndex = index;
-            _savedModeIndex = index;
+            _appliedModeIndex = _currentModeIndex;
 
             UpdateScreenMode(needToUpdate);
         }
@@ -35,8 +35,8 @@ namespace InfiniteVoidRPG.Game.Settings
 
             return mode switch
             {
-                ApplicationScreenMode.ExclusiveFullScreen => "Full Screen",
-                ApplicationScreenMode.FullScreenWindow => "Borderless Screen",
+                ApplicationScreenMode.ExclusiveFullScreen => "FullScreen",
+                ApplicationScreenMode.FullScreenWindow => "Borderless",
                 ApplicationScreenMode.Windowed => "Windowed",
                 _ => ""
             };
@@ -45,49 +45,43 @@ namespace InfiniteVoidRPG.Game.Settings
         public object GetValue() => _currentModeIndex;
         public bool IsMaxValue() => _currentModeIndex >= System.Enum.GetNames(typeof(ApplicationScreenMode)).Length - 1;
         public bool IsMinValue() => _currentModeIndex == 0;
+        public bool IsCurrentValueApplied() => _appliedModeIndex == _currentModeIndex;
+        public float GetCurrentValueDifference() => (float)_currentModeIndex/(float)(System.Enum.GetNames(typeof(ApplicationScreenMode)).Length - 1);
 
-        public object ToNextValue()
+        public object ToNextValue(bool applyChanges = true)
         {
             if (IsMaxValue()) return _currentModeIndex;
 
             _currentModeIndex++;
 
-            UpdateScreenMode();
+            if (applyChanges) Apply();
 
             return _currentModeIndex;
         }
 
-        public object ToPreviousValue()
+        public object ToPreviousValue(bool applyChanges = true)
         {
             if (IsMinValue()) return _currentModeIndex;
 
             _currentModeIndex--;
 
-            UpdateScreenMode();
+            if (applyChanges) Apply();
 
             return _currentModeIndex;
+        }
+
+        public void Apply()
+        {
+            _appliedModeIndex = _currentModeIndex;
+
+            UpdateScreenMode();
         }
 
         public void ResetToDefault()
         {
             _currentModeIndex = _defaultModeIndex;
-            _savedModeIndex = _defaultModeIndex;
 
-            UpdateScreenMode();
-        }
-
-        public void Save(System.Action<object> onSaved = null)
-        {
-            _savedModeIndex = _currentModeIndex;
-
-            onSaved?.Invoke(_savedModeIndex);
-        }
-
-        public void ResetToSaved()
-        {
-            _currentModeIndex = _savedModeIndex;
-
-            UpdateScreenMode();
+            Apply();
         }
 
         private void UpdateScreenMode(bool needToUpdate = true)

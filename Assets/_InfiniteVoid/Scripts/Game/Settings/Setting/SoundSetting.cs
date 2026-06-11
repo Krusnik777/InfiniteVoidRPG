@@ -13,8 +13,7 @@ namespace InfiniteVoidRPG.Game.Settings
         private readonly int _defaultValue;
 
         private int _currentValue;
-        private int _savedValue;
-
+        private int _appliedValue;
 
         public SoundSetting(string soundGroupName, AudioMixer audioMixer, int defaultValue)
         {
@@ -23,15 +22,14 @@ namespace InfiniteVoidRPG.Game.Settings
             _defaultValue = defaultValue;
 
             _currentValue = defaultValue;
-            _savedValue = defaultValue;
+            _appliedValue = defaultValue;
         }
 
         public void SetValue(int value)
         {
             _currentValue = value;
-            _savedValue = _currentValue;
 
-            _audioMixer.SetFloat(_soundGroupName, _currentValue);
+            Apply();
         }
 
         public string GetNameOfValue() => _currentValue.ToString();
@@ -39,8 +37,10 @@ namespace InfiniteVoidRPG.Game.Settings
 
         public bool IsMaxValue() => _currentValue >= _maxValue;
         public bool IsMinValue() => _currentValue <= _minValue;
+        public bool IsCurrentValueApplied() => _appliedValue == _currentValue;
+        public float GetCurrentValueDifference() => (float)_currentValue / (float)_maxValue;
 
-        public object ToNextValue()
+        public object ToNextValue(bool applyChanges = true)
         {
             if (IsMaxValue()) return _currentValue;
 
@@ -48,12 +48,12 @@ namespace InfiniteVoidRPG.Game.Settings
 
             if (_currentValue > _maxValue) _currentValue = _maxValue;
 
-            _audioMixer.SetFloat(_soundGroupName, _currentValue);
+            if (applyChanges) Apply();
 
             return _currentValue;
         }
 
-        public object ToPreviousValue()
+        public object ToPreviousValue(bool applyChanges = true)
         {
             if (IsMinValue()) return _currentValue;
 
@@ -61,31 +61,23 @@ namespace InfiniteVoidRPG.Game.Settings
 
             if (_currentValue < _minValue) _currentValue = _minValue;
 
-            _audioMixer.SetFloat(_soundGroupName, _currentValue);
+            if (applyChanges) Apply();
 
             return _currentValue;
+        }
+
+        public void Apply()
+        {
+            _appliedValue = _currentValue;
+            
+            _audioMixer.SetFloat(_soundGroupName, _currentValue);
         }
 
         public void ResetToDefault()
         {
             _currentValue = _defaultValue;
-            _savedValue = _defaultValue;
 
-            _audioMixer.SetFloat(_soundGroupName, _currentValue);
-        }
-
-        public void Save(System.Action<object> onSaved = null)
-        {
-            _savedValue = _currentValue;
-
-            onSaved?.Invoke(_savedValue);
-        }
-
-        public void ResetToSaved()
-        {
-            _currentValue = _savedValue;
-
-            _audioMixer.SetFloat(_soundGroupName, _currentValue);
+            Apply();
         }
     }
 }

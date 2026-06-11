@@ -61,12 +61,14 @@ namespace InfiniteVoidRPG.Game.Services
 
         public void SaveSettings()
         {
-            SFXVolumeSetting.Save((value) => _applicationSettingsDataHandler.Data.Audio.SFXVolume = (int)value);
-            BGMVolumeSetting.Save((value) => _applicationSettingsDataHandler.Data.Audio.BGMVolume = (int)value);
+            _applicationSettingsDataHandler.Data.CurrentLanguageIndex = (int)LanguageSetting.GetValue();
+            
+            _applicationSettingsDataHandler.Data.Audio.SFXVolume = (int)SFXVolumeSetting.GetValue();
+            _applicationSettingsDataHandler.Data.Audio.BGMVolume = (int)BGMVolumeSetting.GetValue();
 
-            VSyncSetting.Save((value) => _applicationSettingsDataHandler.Data.Graphics.VSyncState = (bool)value);
-            ScreenModeSetting.Save((value) => _applicationSettingsDataHandler.Data.Graphics.ScreenModeIndex = (int)value);
-            ResolutionSetting.Save((value) => _applicationSettingsDataHandler.Data.Graphics.ResolutionIndex = (int)value);
+            _applicationSettingsDataHandler.Data.Graphics.VSyncState = (bool)VSyncSetting.GetValue();
+            _applicationSettingsDataHandler.Data.Graphics.ScreenModeIndex = (int)ScreenModeSetting.GetValue();
+            _applicationSettingsDataHandler.Data.Graphics.ResolutionIndex = (int)ResolutionSetting.GetValue();
 
             _applicationSettingsDataHandler.SaveData();
         }

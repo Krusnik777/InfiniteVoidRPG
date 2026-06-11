@@ -11,7 +11,7 @@ namespace InfiniteVoidRPG.Game.Settings
         private readonly int _defaultResolutionIndex;
 
         private int _currentResolutionIndex;
-        private int _savedResolutionIndex;
+        private int _appliedResolutionIndex;
         private FullScreenMode _currentScreenMode;
 
         private IDisposable _disposable;
@@ -23,7 +23,7 @@ namespace InfiniteVoidRPG.Game.Settings
             _currentScreenMode = FullScreenMode.FullScreenWindow;
 
             _currentResolutionIndex = defaultResolutionIndex;
-            _savedResolutionIndex = defaultResolutionIndex;
+            _appliedResolutionIndex = defaultResolutionIndex;
 
             _disposable = screenModeChange.Subscribe(value => OnScreenModeChange(value.Item1, value.Item2));
         }
@@ -38,73 +38,60 @@ namespace InfiniteVoidRPG.Game.Settings
             if (value < 0 || value >= _resolutions.Count) return;
 
             _currentResolutionIndex = value;
-            _savedResolutionIndex = value;
 
-            UpdateScreen();
+            Apply();
         }
 
         public string GetNameOfValue() => _resolutions[_currentResolutionIndex].ToString();
         public object GetValue() => _currentResolutionIndex;
 
         public bool IsMaxValue() => _currentResolutionIndex >= _resolutions.Count - 1;
-
         public bool IsMinValue() => _currentResolutionIndex == 0;
+        public bool IsCurrentValueApplied() => _currentResolutionIndex == _appliedResolutionIndex;
+        public float GetCurrentValueDifference() => (float)_currentResolutionIndex/(float)(_resolutions.Count - 1);
 
-        public object ToNextValue()
+        public object ToNextValue(bool applyChanges = true)
         {
             if (IsMaxValue()) return _currentResolutionIndex;
 
             _currentResolutionIndex++;
 
-            UpdateScreen();
+            if (applyChanges) Apply();
 
             return _currentResolutionIndex;
         }
 
-        public object ToPreviousValue()
+        public object ToPreviousValue(bool applyChanges = true)
         {
             if (IsMinValue()) return _currentResolutionIndex;
 
             _currentResolutionIndex--;
 
-            UpdateScreen();
+            if (applyChanges) Apply();
 
             return _currentResolutionIndex;
+        }
+
+        public void Apply()
+        {
+            _appliedResolutionIndex = _currentResolutionIndex;
+
+            var resolution = _resolutions[_currentResolutionIndex];
+            Screen.SetResolution(resolution.width, resolution.height, _currentScreenMode);
         }
 
         public void ResetToDefault()
         {
             _currentResolutionIndex = _defaultResolutionIndex;
-            _savedResolutionIndex = _defaultResolutionIndex;
 
-            UpdateScreen();
-        }
-
-        public void Save(Action<object> onSaved = null)
-        {
-            _savedResolutionIndex = _currentResolutionIndex;
-
-            onSaved?.Invoke(_savedResolutionIndex);
-        }
-
-        public void ResetToSaved()
-        {
-            _currentResolutionIndex = _savedResolutionIndex;
-
-            UpdateScreen();
+            Apply();
         }
 
         private void OnScreenModeChange(FullScreenMode mode, bool isNeedToUpdate)
         {
             _currentScreenMode = mode;
 
-            if (isNeedToUpdate) UpdateScreen();
-        }
-
-        private void UpdateScreen()
-        {
-            var resolution = _resolutions[_currentResolutionIndex];
-            Screen.SetResolution(resolution.width, resolution.height, _currentScreenMode);
+            if (isNeedToUpdate) Apply();
         }
     }
 }
