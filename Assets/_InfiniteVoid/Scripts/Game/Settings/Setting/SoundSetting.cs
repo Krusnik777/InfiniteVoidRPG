@@ -38,7 +38,7 @@ namespace InfiniteVoidRPG.Game.Settings
         public bool IsMaxValue() => _currentValue >= _maxValue;
         public bool IsMinValue() => _currentValue <= _minValue;
         public bool IsCurrentValueApplied() => _appliedValue == _currentValue;
-        public float GetCurrentValueDifference() => (float)_currentValue / (float)_maxValue;
+        public float GetCurrentValueDifference() => (float)(_currentValue - _minValue) / (float)(_maxValue - _minValue);
 
         public object ToNextValue(bool applyChanges = true)
         {

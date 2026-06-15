@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 namespace UI.Buttons
 {
-    public abstract class UIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+    public class UIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         [field: SerializeField] public bool Interactable { get; private set; } = true;
         [SerializeField] private bool m_playPressAnimation = true;

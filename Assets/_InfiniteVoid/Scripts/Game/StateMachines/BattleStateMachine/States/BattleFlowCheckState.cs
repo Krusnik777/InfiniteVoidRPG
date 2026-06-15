@@ -1,5 +1,4 @@
 using DI;
-using InfiniteVoidRPG.Game.Gameplay;
 using InfiniteVoidRPG.UI.Gameplay;
 using InfiniteVoidRPG.Utils;
 using StateMachine;

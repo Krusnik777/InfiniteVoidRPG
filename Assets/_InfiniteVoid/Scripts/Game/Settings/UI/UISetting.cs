@@ -6,6 +6,7 @@ namespace InfiniteVoidRPG.Game.Settings
 {
     public abstract class UISetting : MonoBehaviour, System.IDisposable, IPointerEnterHandler, IPointerExitHandler
     {
+        [field: SerializeField] public SettingType SettingType { get; private set; }
         [SerializeField] private GameObject m_selectedIndicator;
 
         public Subject<UISetting> OnSelect { get; private set; } = new();

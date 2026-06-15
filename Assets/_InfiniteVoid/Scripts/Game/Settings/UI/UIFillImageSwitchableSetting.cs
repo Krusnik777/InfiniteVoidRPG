@@ -7,13 +7,6 @@ namespace InfiniteVoidRPG.Game.Settings
     {
         [SerializeField] private Image m_fillImage;
 
-        public override void Setup(ISetting setting)
-        {
-            base.Setup(setting);
-
-            UpdateVisuals();
-        }
-
         protected override void UpdateVisuals()
         {
             m_fillImage.fillAmount = _setting.GetCurrentValueDifference();

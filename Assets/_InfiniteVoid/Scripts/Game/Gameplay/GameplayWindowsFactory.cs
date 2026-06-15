@@ -1,53 +1,34 @@
 using System;
-using InfiniteVoidRPG.UI;
-using InfiniteVoidRPG.UI.Common;
 using InfiniteVoidRPG.UI.Gameplay;
 using UnityEngine;
-using Screen = InfiniteVoidRPG.UI.Screen;
 
 namespace InfiniteVoidRPG.Game.Gameplay
 {
-    public class GameplayWindowsFactory : IWindowsFactory, IDisposable
+    public class GameplayWindowsFactory : CommonWindowsFactory
     {
-        private string _storyEventScreenViewName = "StoryEventScreenView";
         private string _forkPathScreenViewName = "ForkPathScreenView";
         private string _battleScreenViewName = "BattleScreenView";
 
-        private Transform _screensHolder;
-        private Transform _popupsHolder;
+        public GameplayWindowsFactory(Transform screensHolder, Transform popupsHolder) : base(screensHolder, popupsHolder) { }
 
-        public GameplayWindowsFactory(Transform screensHolder, Transform popupsHolder)
-        {
-            _screensHolder = screensHolder;
-            _popupsHolder = popupsHolder;
-        }
-
-        public void Dispose() { }
-
-        public T CreateScreen<T>() where T : Screen
+        public override T CreateScreen<T>()
         {
             Type t = typeof(T);
 
-            if (t == typeof(StoryEventScreen))
-            {
-                var prefabPath = GetCommonUIScreenPrefabPath(_storyEventScreenViewName);
-                var view = InstantiateWindowView<StoryEventScreenView>(prefabPath);
-
-                return new StoryEventScreen(view) as T;
-            }
+            if (t == typeof(UI.Common.StoryEventScreen)) return base.CreateScreen<T>();
 
             if (t == typeof(ForkPathScreen))
             {
-                var prefabPath = GetGameplayUIScreenPrefabPath(_forkPathScreenViewName);
-                var view = InstantiateWindowView<ForkPathScreenView>(prefabPath);
+                var prefabPath = GetGameplayScreenPrefabPath(_forkPathScreenViewName);
+                var view = InstantiateWindowViewForScreen<ForkPathScreenView>(prefabPath);
 
                 return new ForkPathScreen(view) as T;
             }
 
             if (t == typeof(BattleScreen))
             {
-                var prefabPath = GetGameplayUIScreenPrefabPath(_battleScreenViewName);
-                var view = InstantiateWindowView<BattleScreenView>(prefabPath);
+                var prefabPath = GetGameplayScreenPrefabPath(_battleScreenViewName);
+                var view = InstantiateWindowViewForScreen<BattleScreenView>(prefabPath);
 
                 return new BattleScreen(view) as T;
             }
@@ -55,22 +36,14 @@ namespace InfiniteVoidRPG.Game.Gameplay
             throw new ArgumentNullException($"Unsupported class - type of: {t}");
         }
 
-        private T InstantiateWindowView<T>(string prefabPath) where T : WindowView
-        {
-            var prefab = Resources.Load<T>(prefabPath);
-            var windowView = GameObject.Instantiate(prefab, _screensHolder);
-
-            return windowView;
-        }
-
-        private string GetCommonUIScreenPrefabPath(string viewName)
-        {
-            return $"Prefabs/UI/Common/Screens/{viewName}";
-        }
-
-        private string GetGameplayUIScreenPrefabPath(string viewName)
+        private string GetGameplayScreenPrefabPath(string viewName)
         {
             return $"Prefabs/UI/Gameplay/Screens/{viewName}";
+        }
+
+        private string GetGameplayPopupPrefabPath(string viewName)
+        {
+            return $"Prefabs/UI/Gameplay/Popups/{viewName}";
         }
     }
 }

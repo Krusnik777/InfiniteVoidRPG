@@ -534,6 +534,45 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Popups",
+            "id": "4b98b4e3-f95f-48bd-8379-2974e967505e",
+            "actions": [
+                {
+                    "name": "Close",
+                    "type": "Button",
+                    "id": "eda32179-d560-46e7-983b-9939f34a5666",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "13e9a0cc-e77b-4c12-aca4-e79706339fec",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Close",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ec364f8e-7318-4eb1-8b8b-63e5c5a3d035",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Close",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

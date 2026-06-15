@@ -13,5 +13,10 @@ namespace InfiniteVoidRPG.UI
         {
             gameObject.SetActive(false);
         }
+
+        public void Dispose()
+        {
+            Destroy(gameObject);
+        }
     }
 }

@@ -11,6 +11,8 @@ namespace InfiniteVoidRPG.Game.Services
         public Subject<Unit> OnSelectablesSubmitPressed { get; private set;} = new();
         public Subject<Vector2> OnSelectablesMovePressed { get; private set;} = new();
 
+        public Subject<Unit> OnPopupsClosePressed { get; private set;} = new();
+
         private GameInput _gameInput;
         public InputActionAsset ActionsAsset => _gameInput.asset;
 
@@ -23,8 +25,9 @@ namespace InfiniteVoidRPG.Game.Services
 
             _gameInput.Selectables.Submit.performed += OnSelectablesSubmit;
             _gameInput.Selectables.Move.performed += OnSelectablesMove;
-        }
 
+            _gameInput.Popups.Close.performed += OnPopupClose;
+        }
         private void OnSelectablesSubmit(InputAction.CallbackContext context)
         {
             OnSelectablesSubmitPressed?.OnNext(Unit.Default);
@@ -37,12 +40,19 @@ namespace InfiniteVoidRPG.Game.Services
             OnSelectablesMovePressed?.OnNext(value);
         }
 
+        private void OnPopupClose(InputAction.CallbackContext context)
+        {
+            OnPopupsClosePressed?.OnNext(Unit.Default);
+        }
+
         public void Dispose()
         {
             _anyButtonPressListenerDisposable?.Dispose();
 
             _gameInput.Selectables.Submit.performed -= OnSelectablesSubmit;
             _gameInput.Selectables.Move.performed -= OnSelectablesMove;
+
+            _gameInput.Popups.Close.performed -= OnPopupClose;
         }
 
         public void ClearReactionForAnyButtonPress() => _anyButtonPressListenerDisposable?.Dispose();

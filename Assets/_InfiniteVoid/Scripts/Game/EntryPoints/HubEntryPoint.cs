@@ -18,6 +18,7 @@ namespace InfiniteVoidRPG.Game.EntryPoints
 
         private IDisposable _preparationScreenListenerDisposable;
         private IDisposable _settingsSignalListenerDisposable;
+        private IDisposable _settingsWindowClosedListenerDisposable; // temp
 
         public override Observable<string> Run(DIContainer sceneContainer)
         {
@@ -56,6 +57,7 @@ namespace InfiniteVoidRPG.Game.EntryPoints
         {
             _preparationScreenListenerDisposable?.Dispose();  
             _settingsSignalListenerDisposable?.Dispose(); 
+            _settingsWindowClosedListenerDisposable?.Dispose();
         }
 
         private void SetupUI(DIContainer sceneContainer)
@@ -72,8 +74,9 @@ namespace InfiniteVoidRPG.Game.EntryPoints
         private void HandleScreens(DIContainer sceneContainer)
         {
             var hubUIWindowsProvider = sceneContainer.Resolve<UIWindowsProvider>();
+            var gameInputService = sceneContainer.Resolve<GameInputService>();
             var screen = hubUIWindowsProvider.ShowScreen<PreparationScreen>();
-            screen.Initialize(sceneContainer.Resolve<GameInputService>());
+            screen.Initialize(gameInputService);
             screen.SetButtonsContainerActive(true);
 
             _preparationScreenListenerDisposable = screen.OnMainButtonPressed.Subscribe(result =>
@@ -105,9 +108,14 @@ namespace InfiniteVoidRPG.Game.EntryPoints
 
             _settingsSignalListenerDisposable = screen.OnSettingsButtonPressed.Subscribe(_ =>
             {
-                Debug.Log("Pressed Settings");
-                //screen.SetButtonsContainerActive(false);
-                // Show Settings Popup
+                screen.SetButtonsContainerActive(false);
+                var window = hubUIWindowsProvider.ShowPopup<SettingsWindow>(new SettingsWindowInitData(sceneContainer.Resolve<ApplicationControlService>(), gameInputService));
+                _settingsWindowClosedListenerDisposable = window.OnClose.Subscribe(_ =>
+                {
+                    _settingsWindowClosedListenerDisposable?.Dispose();
+
+                    screen.SetButtonsContainerActive(true);
+                });
                 // Subscribe to all Popups closed
             });
         }

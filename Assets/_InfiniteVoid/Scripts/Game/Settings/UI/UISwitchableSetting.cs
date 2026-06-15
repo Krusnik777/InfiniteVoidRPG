@@ -24,6 +24,9 @@ namespace InfiniteVoidRPG.Game.Settings
             };
 
             if (m_confirmChangesButton != null) _disposables.Add(m_confirmChangesButton.OnPress.Subscribe(_ => OnPressed()));
+
+            UpdateButtons();
+            UpdateVisuals();
         }
 
         public override void Dispose()
@@ -44,6 +47,8 @@ namespace InfiniteVoidRPG.Game.Settings
 
         public override void ChangeToNextValue()
         {
+            if (_setting.IsMaxValue()) return;
+
             _setting.ToNextValue(m_applyAtChange);
             
             UpdateButtons();
@@ -52,6 +57,8 @@ namespace InfiniteVoidRPG.Game.Settings
 
         public override void ChangeToPreviousValue()
         {
+            if (_setting.IsMinValue()) return;
+
             _setting.ToPreviousValue(m_applyAtChange);
 
             UpdateButtons();
@@ -60,8 +67,10 @@ namespace InfiniteVoidRPG.Game.Settings
 
         private void UpdateButtons()
         {
-            m_rightButton.SetInteractable(!_setting.IsMaxValue());
-            m_leftButton.SetInteractable(!_setting.IsMinValue());
+            //m_rightButton.SetInteractable(!_setting.IsMaxValue());
+            m_rightButton.gameObject.SetActive(!_setting.IsMaxValue());
+            //m_leftButton.SetInteractable(!_setting.IsMinValue());
+            m_leftButton.gameObject.SetActive(!_setting.IsMinValue());
 
             if (!m_applyAtChange && m_confirmChangesButton != null) m_confirmChangesButton.gameObject.SetActive(!_setting.IsCurrentValueApplied());
         }
