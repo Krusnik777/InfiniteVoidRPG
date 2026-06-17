@@ -19,11 +19,13 @@ namespace UI.Buttons
         [field: SerializeField] public bool Interactable { get; private set; } = true;
         [SerializeField] private SelectableButton[] m_buttons;
 
-        private Dictionary<SelectableButton, SelectableButton.Context> _buttonsMap;
-        private CompositeDisposable _disposables;
-        private CompositeDisposable _inputDisposables;
+        private UIInputControlledEntity _controlledEntity;
+        private UIInputController _uiInputController;
 
         private SelectableButton _activeButton;
+
+        private Dictionary<SelectableButton, SelectableButton.Context> _buttonsMap;
+        private CompositeDisposable _disposables;
 
         public void SetInteractable(bool state)
         {
@@ -39,16 +41,34 @@ namespace UI.Buttons
 
         public void Dispose()
         {
+            _uiInputController.AssignControlledEntity(this, null);
             _disposables?.Dispose();
-            _inputDisposables?.Dispose();
         }
 
-        public void Init(bool activateFirstButton = true, bool clearButtons = true)
+        public void Init(UIInputController uiInputController, bool activateFirstButton = true, bool clearButtons = true, Action cancelAction = null)
         {
             _disposables?.Dispose();
 
             _buttonsMap = new();
             _disposables = new();
+
+            _uiInputController = uiInputController;
+
+            _controlledEntity = new(this)
+            {
+                OnSubmit = PressActiveButton,
+                OnMove = (input) =>
+                {
+                    var direction = NavigationDirection.Left;
+
+                    if (input.x > 0) direction = NavigationDirection.Right;
+                    else if (input.y > 0) direction = NavigationDirection.Up;
+                    else if (input.y < 0) direction = NavigationDirection.Down;
+
+                    SelectNextButton(direction);
+                }
+            };
+            if (cancelAction != null) _controlledEntity.OnCancel = cancelAction;
 
             if (clearButtons)
             {
@@ -80,29 +100,16 @@ namespace UI.Buttons
             }
         }
 
-        public void EnableInputs(GameInputService gameInputService)
+        public void SetAsControlled(bool state = true)
         {
-            _inputDisposables?.Dispose();
-
-            _inputDisposables = new()
+            if (!state)
             {
-                gameInputService.OnSelectablesSubmitPressed.Subscribe(_ => PressActiveButton()),
-                gameInputService.OnSelectablesMovePressed.Subscribe(input =>
-                {
-                    var direction = NavigationDirection.Left;
+                _uiInputController.AssignControlledEntity(this, null);
 
-                    if (input.x > 0) direction = NavigationDirection.Right;
-                    else if (input.y > 0) direction = NavigationDirection.Up;
-                    else if (input.y < 0) direction = NavigationDirection.Down;
+                return;
+            }
 
-                    SelectNextButton(direction);
-                })
-            };
-        }
-
-        public void DisableInputs()
-        {
-            _inputDisposables?.Dispose();
+            _uiInputController.AssignControlledEntity(this, _controlledEntity);
         }
 
         private void OnButtonSelect(SelectableButton button)

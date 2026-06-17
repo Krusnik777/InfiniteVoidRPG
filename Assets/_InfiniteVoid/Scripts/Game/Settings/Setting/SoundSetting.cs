@@ -73,6 +73,13 @@ namespace InfiniteVoidRPG.Game.Settings
             _audioMixer.SetFloat(_soundGroupName, _currentValue);
         }
 
+        public void ResetToApplied(bool applyChanges = false)
+        {
+            _currentValue = _appliedValue;
+
+            if (applyChanges) Apply();
+        }
+
         public void ResetToDefault()
         {
             _currentValue = _defaultValue;

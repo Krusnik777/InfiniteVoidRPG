@@ -3,7 +3,7 @@
     "name": "GameInput",
     "maps": [
         {
-            "name": "Selectables",
+            "name": "UIControls",
             "id": "df70fa95-8a34-4494-b137-73ab6b9c7d37",
             "actions": [
                 {
@@ -19,6 +19,15 @@
                     "name": "Submit",
                     "type": "Button",
                     "id": "852140f2-7766-474d-8707-702459ba45f3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "b11dd561-bf45-477f-aeb6-a7166a8ea117",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -199,6 +208,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Submit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e112316b-9d65-4f0f-a8ed-d2a157de0206",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9f34f05b-9104-4f7d-8012-fd3c6b0243eb",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -530,45 +561,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Settings",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Popups",
-            "id": "4b98b4e3-f95f-48bd-8379-2974e967505e",
-            "actions": [
-                {
-                    "name": "Close",
-                    "type": "Button",
-                    "id": "eda32179-d560-46e7-983b-9939f34a5666",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "13e9a0cc-e77b-4c12-aca4-e79706339fec",
-                    "path": "<Gamepad>/buttonEast",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Close",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ec364f8e-7318-4eb1-8b8b-63e5c5a3d035",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Close",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

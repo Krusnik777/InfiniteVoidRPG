@@ -22,7 +22,7 @@ namespace InfiniteVoidRPG.Game.StoryEvents
             _currentScreen = currentScreen;
             _onEnd = onEnd;
 
-            _submitPressed = _gameInputService.OnSelectablesSubmitPressed;
+            _submitPressed = _gameInputService.UIInputController.OnUISubmitPressed;
         }
 
         public virtual void Dispose()

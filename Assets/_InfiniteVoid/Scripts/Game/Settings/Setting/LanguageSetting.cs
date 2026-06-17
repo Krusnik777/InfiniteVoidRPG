@@ -72,6 +72,13 @@ namespace InfiniteVoidRPG.Game.Settings
             LocalizationSystem.ChangeLanguage((LocalizationLanguage)_currentLanguageIndex);
         }
 
+        public void ResetToApplied(bool applyChanges = false)
+        {
+            _currentLanguageIndex = _appliedLanguageIndex;
+
+            if (applyChanges) Apply();
+        }
+
         public void ResetToDefault()
         {
             _currentLanguageIndex = _defaultLanguageIndex;

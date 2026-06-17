@@ -77,6 +77,13 @@ namespace InfiniteVoidRPG.Game.Settings
             UpdateScreenMode();
         }
 
+        public void ResetToApplied(bool applyChanges = false)
+        {
+            _currentModeIndex = _appliedModeIndex;
+
+            if (applyChanges) Apply();
+        }
+
         public void ResetToDefault()
         {
             _currentModeIndex = _defaultModeIndex;

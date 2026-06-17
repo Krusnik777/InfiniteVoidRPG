@@ -79,8 +79,8 @@ namespace InfiniteVoidRPG.UI.Common
 
             await UniTask.WaitForFixedUpdate();
             
-            _concreteView.ButtonsContainer.Init(false);
-            _concreteView.ButtonsContainer.EnableInputs(gameInputService);
+            _concreteView.ButtonsContainer.Init(gameInputService.UIInputController, false);
+            _concreteView.ButtonsContainer.SetAsControlled();
 
             return observables;
         }
@@ -89,6 +89,7 @@ namespace InfiniteVoidRPG.UI.Common
         {
             if (_concreteView.ButtonsContainer.gameObject.activeSelf)
             {
+                _concreteView.ButtonsContainer.SetAsControlled(false);
                 _concreteView.ButtonsContainer?.Dispose();
                 _concreteView.ButtonsContainer.gameObject.SetActive(false);
             }

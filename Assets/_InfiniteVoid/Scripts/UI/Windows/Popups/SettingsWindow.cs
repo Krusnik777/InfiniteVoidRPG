@@ -5,20 +5,42 @@ using UnityEngine;
 
 namespace InfiniteVoidRPG.UI
 {
+    public class SettingsWindowExitParameters
+    {
+        public System.Action AgreeToApplySettingsAction;
+        public System.Action DeclineToApplySettingsAction;
+    }
+
     public class SettingsWindow : Popup
     {
+        public Subject<SettingsWindowExitParameters> OnNotAppliedSettingsDetected;
+
         private SettingsWindowView _concreteView => _view as SettingsWindowView;
+        
+        private UIInputControlledEntity _controlledEntity;
+        private UIInputController _uiInputController;
 
         private UISetting _activeUISetting;
         private int _activeIndex;
 
-        private System.Action _saveAction;
+        private System.Func<bool> _checkWaitingApplyFunc;
+        private System.Action _confirmSaveAndHideAction;
+        private System.Action _declineSaveAndHideAction;
 
-        private CompositeDisposable _inputDisposables;
         private CompositeDisposable _selectListenerDisposables;
         private System.IDisposable _closeButtonListenerDisposable;
 
-        public SettingsWindow(SettingsWindowView view) : base(view) { }
+        public SettingsWindow(SettingsWindowView view) : base(view)
+        {
+            _controlledEntity = new(this)
+            {
+                OnSubmit = TryToApplyCurrentSetting,
+                OnMove = ControlSettings,
+                OnCancel = TryToHide
+            };
+
+            OnNotAppliedSettingsDetected = new();
+        }
 
         public override void Show()
         {
@@ -32,6 +54,7 @@ namespace InfiniteVoidRPG.UI
         public override void Hide()
         {
             _closeButtonListenerDisposable?.Dispose();
+            _uiInputController.AssignControlledEntity(this, null);
 
             base.Hide();
         }
@@ -39,7 +62,6 @@ namespace InfiniteVoidRPG.UI
         public override void Dispose()
         {
             _selectListenerDisposables?.Dispose();
-            _inputDisposables?.Dispose();
             _closeButtonListenerDisposable?.Dispose();
             
             base.Dispose();
@@ -50,7 +72,7 @@ namespace InfiniteVoidRPG.UI
             _selectListenerDisposables?.Dispose();
             _selectListenerDisposables = new();
 
-            SetupInputs(initData.InputService);
+            _uiInputController = initData.InputService.UIInputController;
 
             if (initData is not SettingsWindowInitData) throw new System.FormatException("Unsupported data for popup - Settings Window");
 
@@ -91,19 +113,29 @@ namespace InfiniteVoidRPG.UI
             _activeIndex = 0;
             _activeUISetting.SetSelected(true);
 
-            _saveAction += () => data.ApplicationControlService.SaveSettings();
+            _confirmSaveAndHideAction += () =>
+            {
+                data.ApplicationControlService.ApplyAndSaveSettings();
+                Hide();
+            };
+            _declineSaveAndHideAction += () =>
+            {
+                data.ApplicationControlService.ResetSettingsToAppliedValues();
+                Hide();
+            };
+            _checkWaitingApplyFunc = () => data.ApplicationControlService.IsAnySettingWaitingApply();
         }
 
-        private void SetupInputs(GameInputService gameInputService)
+        public void SetAsControlled(bool state = true)
         {
-            _inputDisposables?.Dispose();
-
-            _inputDisposables = new()
+            if (!state)
             {
-                gameInputService.OnSelectablesSubmitPressed.Subscribe(_ => TryToApplyCurrentSetting()),
-                gameInputService.OnSelectablesMovePressed.Subscribe(input => ControlSettings(input)),
-                gameInputService.OnPopupsClosePressed.Subscribe(_ => TryToHide())
-            };
+                _uiInputController.AssignControlledEntity(this, null);
+
+                return;
+            }
+
+            _uiInputController.AssignControlledEntity(this, _controlledEntity);
         }
 
         private void TryToApplyCurrentSetting()
@@ -135,9 +167,18 @@ namespace InfiniteVoidRPG.UI
 
         private void TryToHide()
         {
-            _saveAction?.Invoke();
-
-            Hide();
+            if (_checkWaitingApplyFunc())
+            {
+                OnNotAppliedSettingsDetected?.OnNext(new SettingsWindowExitParameters
+                {
+                    AgreeToApplySettingsAction = _confirmSaveAndHideAction,
+                    DeclineToApplySettingsAction = _declineSaveAndHideAction
+                });
+            }
+            else
+            {
+                _confirmSaveAndHideAction?.Invoke();
+            }
         }
 
         private void SelectActiveSetting(int targetIndex)

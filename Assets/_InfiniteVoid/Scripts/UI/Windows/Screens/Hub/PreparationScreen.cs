@@ -22,7 +22,7 @@ namespace InfiniteVoidRPG.UI.Hub
         public void Initialize(GameInputService gameInputService)
         {
             _gameInputService = gameInputService;
-            _concreteView.MainButtonsContainer.Init();
+            _concreteView.MainButtonsContainer.Init(gameInputService.UIInputController);
             _concreteView.SettingsButton.Init(gameInputService);
         }
 
@@ -36,6 +36,8 @@ namespace InfiniteVoidRPG.UI.Hub
         public override void Hide()
         {
             base.Hide();
+
+            SetButtonsContainerActive(false);
 
             DisposeOfListeners();
         }
@@ -51,12 +53,12 @@ namespace InfiniteVoidRPG.UI.Hub
         {
             if (state)
             {
-                _concreteView.MainButtonsContainer.EnableInputs(_gameInputService);
+                _concreteView.MainButtonsContainer.SetAsControlled();
                 _concreteView.SettingsButton.SetInteractable(true);
             }
             else
             {
-                _concreteView.MainButtonsContainer.DisableInputs();
+                _concreteView.MainButtonsContainer.SetAsControlled(false);
                 _concreteView.SettingsButton.SetInteractable(false);
             }
         }

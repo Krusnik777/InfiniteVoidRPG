@@ -18,6 +18,8 @@ namespace InfiniteVoidRPG.Game.EntryPoints
 
         private IDisposable _preparationScreenListenerDisposable;
         private IDisposable _settingsSignalListenerDisposable;
+
+        private IDisposable _settingsWindowApplyingListenerDisposable; // temp
         private IDisposable _settingsWindowClosedListenerDisposable; // temp
 
         public override Observable<string> Run(DIContainer sceneContainer)
@@ -57,6 +59,8 @@ namespace InfiniteVoidRPG.Game.EntryPoints
         {
             _preparationScreenListenerDisposable?.Dispose();  
             _settingsSignalListenerDisposable?.Dispose(); 
+
+            _settingsWindowApplyingListenerDisposable?.Dispose();
             _settingsWindowClosedListenerDisposable?.Dispose();
         }
 
@@ -110,9 +114,24 @@ namespace InfiniteVoidRPG.Game.EntryPoints
             {
                 screen.SetButtonsContainerActive(false);
                 var window = hubUIWindowsProvider.ShowPopup<SettingsWindow>(new SettingsWindowInitData(sceneContainer.Resolve<ApplicationControlService>(), gameInputService));
+                window.SetAsControlled();
+
+                _settingsWindowApplyingListenerDisposable = window.OnNotAppliedSettingsDetected.Subscribe(parameters =>
+                {
+                    var context = new ConfirmWindowContext()
+                    {
+                        Message = "Some settings changes waiting for confirmation. Agree?",
+                        OnAgree = parameters.AgreeToApplySettingsAction,
+                        OnDecline = parameters.DeclineToApplySettingsAction,
+                        OnCancel = () => window.SetAsControlled()
+                    };
+                    var confirmWindow = hubUIWindowsProvider.ShowPopup<ConfirmWindow>(new ConfirmWindowInitData(gameInputService, context));
+                });
+
                 _settingsWindowClosedListenerDisposable = window.OnClose.Subscribe(_ =>
                 {
                     _settingsWindowClosedListenerDisposable?.Dispose();
+                    _settingsWindowApplyingListenerDisposable?.Dispose();
 
                     screen.SetButtonsContainerActive(true);
                 });

@@ -14,6 +14,7 @@ namespace InfiniteVoidRPG.Game.Settings
         public object ToPreviousValue(bool applyChanges = true);
         
         public void Apply();
+        public void ResetToApplied(bool applyChanges = false);
         public void ResetToDefault();
     }
 }

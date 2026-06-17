@@ -80,6 +80,13 @@ namespace InfiniteVoidRPG.Game.Settings
             Screen.SetResolution(resolution.width, resolution.height, _currentScreenMode);
         }
 
+        public void ResetToApplied(bool applyChanges = false)
+        {
+            _currentResolutionIndex = _appliedResolutionIndex;
+
+            if (applyChanges) Apply();
+        }
+
         public void ResetToDefault()
         {
             _currentResolutionIndex = _defaultResolutionIndex;

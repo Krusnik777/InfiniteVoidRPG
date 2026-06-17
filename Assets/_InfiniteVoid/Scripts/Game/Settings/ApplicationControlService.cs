@@ -59,8 +59,22 @@ namespace InfiniteVoidRPG.Game.Services
             ResolutionSetting.SetValue(_applicationSettingsDataHandler.Data.Graphics.ResolutionIndex);
         }
 
-        public void SaveSettings()
+        public bool IsAnySettingWaitingApply()
         {
+            if (!LanguageSetting.IsCurrentValueApplied()) return true;
+            if (!SFXVolumeSetting.IsCurrentValueApplied()) return true;
+            if (!BGMVolumeSetting.IsCurrentValueApplied()) return true;
+            if (!ResolutionSetting.IsCurrentValueApplied()) return true;
+            if (!ScreenModeSetting.IsCurrentValueApplied()) return true;
+            if (!VSyncSetting.IsCurrentValueApplied()) return true;
+
+            return false;
+        }
+
+        public void ApplyAndSaveSettings()
+        {
+            LanguageSetting.Apply();
+
             _applicationSettingsDataHandler.Data.CurrentLanguageIndex = (int)LanguageSetting.GetValue();
             
             _applicationSettingsDataHandler.Data.Audio.SFXVolume = (int)SFXVolumeSetting.GetValue();
@@ -69,6 +83,20 @@ namespace InfiniteVoidRPG.Game.Services
             _applicationSettingsDataHandler.Data.Graphics.VSyncState = (bool)VSyncSetting.GetValue();
             _applicationSettingsDataHandler.Data.Graphics.ScreenModeIndex = (int)ScreenModeSetting.GetValue();
             _applicationSettingsDataHandler.Data.Graphics.ResolutionIndex = (int)ResolutionSetting.GetValue();
+
+            _applicationSettingsDataHandler.SaveData();
+        }
+
+        public void ResetSettingsToAppliedValues()
+        {
+            LanguageSetting.ResetToApplied();
+            
+            SFXVolumeSetting.ResetToApplied();
+            BGMVolumeSetting.ResetToApplied();
+
+            VSyncSetting.ResetToApplied();
+            ScreenModeSetting.ResetToApplied();
+            ResolutionSetting.ResetToApplied();
 
             _applicationSettingsDataHandler.SaveData();
         }

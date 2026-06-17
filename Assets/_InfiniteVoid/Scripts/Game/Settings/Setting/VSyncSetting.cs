@@ -61,6 +61,13 @@ namespace InfiniteVoidRPG.Game.Settings
             QualitySettings.vSyncCount = _currentValue ? 1 : 0;
         }
 
+        public void ResetToApplied(bool applyChanges = false)
+        {
+            _currentValue = _appliedValue;
+
+            if (applyChanges) Apply();
+        }
+
         public void ResetToDefault()
         {
             _currentValue = _defaultValue;

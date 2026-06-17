@@ -91,7 +91,7 @@ namespace InfiniteVoidRPG
     ""name"": ""GameInput"",
     ""maps"": [
         {
-            ""name"": ""Selectables"",
+            ""name"": ""UIControls"",
             ""id"": ""df70fa95-8a34-4494-b137-73ab6b9c7d37"",
             ""actions"": [
                 {
@@ -107,6 +107,15 @@ namespace InfiniteVoidRPG
                     ""name"": ""Submit"",
                     ""type"": ""Button"",
                     ""id"": ""852140f2-7766-474d-8707-702459ba45f3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""b11dd561-bf45-477f-aeb6-a7166a8ea117"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -287,6 +296,28 @@ namespace InfiniteVoidRPG
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e112316b-9d65-4f0f-a8ed-d2a157de0206"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9f34f05b-9104-4f7d-8012-fd3c6b0243eb"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -622,45 +653,6 @@ namespace InfiniteVoidRPG
                     ""isPartOfComposite"": false
                 }
             ]
-        },
-        {
-            ""name"": ""Popups"",
-            ""id"": ""4b98b4e3-f95f-48bd-8379-2974e967505e"",
-            ""actions"": [
-                {
-                    ""name"": ""Close"",
-                    ""type"": ""Button"",
-                    ""id"": ""eda32179-d560-46e7-983b-9939f34a5666"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""13e9a0cc-e77b-4c12-aca4-e79706339fec"",
-                    ""path"": ""<Gamepad>/buttonEast"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Close"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""ec364f8e-7318-4eb1-8b8b-63e5c5a3d035"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Close"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
         }
     ],
     ""controlSchemes"": [
@@ -726,10 +718,11 @@ namespace InfiniteVoidRPG
         }
     ]
 }");
-            // Selectables
-            m_Selectables = asset.FindActionMap("Selectables", throwIfNotFound: true);
-            m_Selectables_Move = m_Selectables.FindAction("Move", throwIfNotFound: true);
-            m_Selectables_Submit = m_Selectables.FindAction("Submit", throwIfNotFound: true);
+            // UIControls
+            m_UIControls = asset.FindActionMap("UIControls", throwIfNotFound: true);
+            m_UIControls_Move = m_UIControls.FindAction("Move", throwIfNotFound: true);
+            m_UIControls_Submit = m_UIControls.FindAction("Submit", throwIfNotFound: true);
+            m_UIControls_Cancel = m_UIControls.FindAction("Cancel", throwIfNotFound: true);
             // InputButtons
             m_InputButtons = asset.FindActionMap("InputButtons", throwIfNotFound: true);
             m_InputButtons_Attack = m_InputButtons.FindAction("Attack", throwIfNotFound: true);
@@ -741,16 +734,12 @@ namespace InfiniteVoidRPG
             m_InputButtons_Left = m_InputButtons.FindAction("Left", throwIfNotFound: true);
             m_InputButtons_Right = m_InputButtons.FindAction("Right", throwIfNotFound: true);
             m_InputButtons_Settings = m_InputButtons.FindAction("Settings", throwIfNotFound: true);
-            // Popups
-            m_Popups = asset.FindActionMap("Popups", throwIfNotFound: true);
-            m_Popups_Close = m_Popups.FindAction("Close", throwIfNotFound: true);
         }
 
         ~@GameInput()
         {
-            UnityEngine.Debug.Assert(!m_Selectables.enabled, "This will cause a leak and performance issues, GameInput.Selectables.Disable() has not been called.");
+            UnityEngine.Debug.Assert(!m_UIControls.enabled, "This will cause a leak and performance issues, GameInput.UIControls.Disable() has not been called.");
             UnityEngine.Debug.Assert(!m_InputButtons.enabled, "This will cause a leak and performance issues, GameInput.InputButtons.Disable() has not been called.");
-            UnityEngine.Debug.Assert(!m_Popups.enabled, "This will cause a leak and performance issues, GameInput.Popups.Disable() has not been called.");
         }
 
         /// <summary>
@@ -823,34 +812,39 @@ namespace InfiniteVoidRPG
             return asset.FindBinding(bindingMask, out action);
         }
 
-        // Selectables
-        private readonly InputActionMap m_Selectables;
-        private List<ISelectablesActions> m_SelectablesActionsCallbackInterfaces = new List<ISelectablesActions>();
-        private readonly InputAction m_Selectables_Move;
-        private readonly InputAction m_Selectables_Submit;
+        // UIControls
+        private readonly InputActionMap m_UIControls;
+        private List<IUIControlsActions> m_UIControlsActionsCallbackInterfaces = new List<IUIControlsActions>();
+        private readonly InputAction m_UIControls_Move;
+        private readonly InputAction m_UIControls_Submit;
+        private readonly InputAction m_UIControls_Cancel;
         /// <summary>
-        /// Provides access to input actions defined in input action map "Selectables".
+        /// Provides access to input actions defined in input action map "UIControls".
         /// </summary>
-        public struct SelectablesActions
+        public struct UIControlsActions
         {
             private @GameInput m_Wrapper;
 
             /// <summary>
             /// Construct a new instance of the input action map wrapper class.
             /// </summary>
-            public SelectablesActions(@GameInput wrapper) { m_Wrapper = wrapper; }
+            public UIControlsActions(@GameInput wrapper) { m_Wrapper = wrapper; }
             /// <summary>
-            /// Provides access to the underlying input action "Selectables/Move".
+            /// Provides access to the underlying input action "UIControls/Move".
             /// </summary>
-            public InputAction @Move => m_Wrapper.m_Selectables_Move;
+            public InputAction @Move => m_Wrapper.m_UIControls_Move;
             /// <summary>
-            /// Provides access to the underlying input action "Selectables/Submit".
+            /// Provides access to the underlying input action "UIControls/Submit".
             /// </summary>
-            public InputAction @Submit => m_Wrapper.m_Selectables_Submit;
+            public InputAction @Submit => m_Wrapper.m_UIControls_Submit;
+            /// <summary>
+            /// Provides access to the underlying input action "UIControls/Cancel".
+            /// </summary>
+            public InputAction @Cancel => m_Wrapper.m_UIControls_Cancel;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
-            public InputActionMap Get() { return m_Wrapper.m_Selectables; }
+            public InputActionMap Get() { return m_Wrapper.m_UIControls; }
             /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
             public void Enable() { Get().Enable(); }
             /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
@@ -858,9 +852,9 @@ namespace InfiniteVoidRPG
             /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
             public bool enabled => Get().enabled;
             /// <summary>
-            /// Implicitly converts an <see ref="SelectablesActions" /> to an <see ref="InputActionMap" /> instance.
+            /// Implicitly converts an <see ref="UIControlsActions" /> to an <see ref="InputActionMap" /> instance.
             /// </summary>
-            public static implicit operator InputActionMap(SelectablesActions set) { return set.Get(); }
+            public static implicit operator InputActionMap(UIControlsActions set) { return set.Get(); }
             /// <summary>
             /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
             /// </summary>
@@ -868,17 +862,20 @@ namespace InfiniteVoidRPG
             /// <remarks>
             /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
             /// </remarks>
-            /// <seealso cref="SelectablesActions" />
-            public void AddCallbacks(ISelectablesActions instance)
+            /// <seealso cref="UIControlsActions" />
+            public void AddCallbacks(IUIControlsActions instance)
             {
-                if (instance == null || m_Wrapper.m_SelectablesActionsCallbackInterfaces.Contains(instance)) return;
-                m_Wrapper.m_SelectablesActionsCallbackInterfaces.Add(instance);
+                if (instance == null || m_Wrapper.m_UIControlsActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_UIControlsActionsCallbackInterfaces.Add(instance);
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
                 @Submit.started += instance.OnSubmit;
                 @Submit.performed += instance.OnSubmit;
                 @Submit.canceled += instance.OnSubmit;
+                @Cancel.started += instance.OnCancel;
+                @Cancel.performed += instance.OnCancel;
+                @Cancel.canceled += instance.OnCancel;
             }
 
             /// <summary>
@@ -887,8 +884,8 @@ namespace InfiniteVoidRPG
             /// <remarks>
             /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
             /// </remarks>
-            /// <seealso cref="SelectablesActions" />
-            private void UnregisterCallbacks(ISelectablesActions instance)
+            /// <seealso cref="UIControlsActions" />
+            private void UnregisterCallbacks(IUIControlsActions instance)
             {
                 @Move.started -= instance.OnMove;
                 @Move.performed -= instance.OnMove;
@@ -896,15 +893,18 @@ namespace InfiniteVoidRPG
                 @Submit.started -= instance.OnSubmit;
                 @Submit.performed -= instance.OnSubmit;
                 @Submit.canceled -= instance.OnSubmit;
+                @Cancel.started -= instance.OnCancel;
+                @Cancel.performed -= instance.OnCancel;
+                @Cancel.canceled -= instance.OnCancel;
             }
 
             /// <summary>
-            /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="SelectablesActions.UnregisterCallbacks(ISelectablesActions)" />.
+            /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="UIControlsActions.UnregisterCallbacks(IUIControlsActions)" />.
             /// </summary>
-            /// <seealso cref="SelectablesActions.UnregisterCallbacks(ISelectablesActions)" />
-            public void RemoveCallbacks(ISelectablesActions instance)
+            /// <seealso cref="UIControlsActions.UnregisterCallbacks(IUIControlsActions)" />
+            public void RemoveCallbacks(IUIControlsActions instance)
             {
-                if (m_Wrapper.m_SelectablesActionsCallbackInterfaces.Remove(instance))
+                if (m_Wrapper.m_UIControlsActionsCallbackInterfaces.Remove(instance))
                     UnregisterCallbacks(instance);
             }
 
@@ -914,21 +914,21 @@ namespace InfiniteVoidRPG
             /// <remarks>
             /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
             /// </remarks>
-            /// <seealso cref="SelectablesActions.AddCallbacks(ISelectablesActions)" />
-            /// <seealso cref="SelectablesActions.RemoveCallbacks(ISelectablesActions)" />
-            /// <seealso cref="SelectablesActions.UnregisterCallbacks(ISelectablesActions)" />
-            public void SetCallbacks(ISelectablesActions instance)
+            /// <seealso cref="UIControlsActions.AddCallbacks(IUIControlsActions)" />
+            /// <seealso cref="UIControlsActions.RemoveCallbacks(IUIControlsActions)" />
+            /// <seealso cref="UIControlsActions.UnregisterCallbacks(IUIControlsActions)" />
+            public void SetCallbacks(IUIControlsActions instance)
             {
-                foreach (var item in m_Wrapper.m_SelectablesActionsCallbackInterfaces)
+                foreach (var item in m_Wrapper.m_UIControlsActionsCallbackInterfaces)
                     UnregisterCallbacks(item);
-                m_Wrapper.m_SelectablesActionsCallbackInterfaces.Clear();
+                m_Wrapper.m_UIControlsActionsCallbackInterfaces.Clear();
                 AddCallbacks(instance);
             }
         }
         /// <summary>
-        /// Provides a new <see cref="SelectablesActions" /> instance referencing this action map.
+        /// Provides a new <see cref="UIControlsActions" /> instance referencing this action map.
         /// </summary>
-        public SelectablesActions @Selectables => new SelectablesActions(this);
+        public UIControlsActions @UIControls => new UIControlsActions(this);
 
         // InputButtons
         private readonly InputActionMap m_InputButtons;
@@ -1113,102 +1113,6 @@ namespace InfiniteVoidRPG
         /// Provides a new <see cref="InputButtonsActions" /> instance referencing this action map.
         /// </summary>
         public InputButtonsActions @InputButtons => new InputButtonsActions(this);
-
-        // Popups
-        private readonly InputActionMap m_Popups;
-        private List<IPopupsActions> m_PopupsActionsCallbackInterfaces = new List<IPopupsActions>();
-        private readonly InputAction m_Popups_Close;
-        /// <summary>
-        /// Provides access to input actions defined in input action map "Popups".
-        /// </summary>
-        public struct PopupsActions
-        {
-            private @GameInput m_Wrapper;
-
-            /// <summary>
-            /// Construct a new instance of the input action map wrapper class.
-            /// </summary>
-            public PopupsActions(@GameInput wrapper) { m_Wrapper = wrapper; }
-            /// <summary>
-            /// Provides access to the underlying input action "Popups/Close".
-            /// </summary>
-            public InputAction @Close => m_Wrapper.m_Popups_Close;
-            /// <summary>
-            /// Provides access to the underlying input action map instance.
-            /// </summary>
-            public InputActionMap Get() { return m_Wrapper.m_Popups; }
-            /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
-            public void Enable() { Get().Enable(); }
-            /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
-            public void Disable() { Get().Disable(); }
-            /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
-            public bool enabled => Get().enabled;
-            /// <summary>
-            /// Implicitly converts an <see ref="PopupsActions" /> to an <see ref="InputActionMap" /> instance.
-            /// </summary>
-            public static implicit operator InputActionMap(PopupsActions set) { return set.Get(); }
-            /// <summary>
-            /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
-            /// </summary>
-            /// <param name="instance">Callback instance.</param>
-            /// <remarks>
-            /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
-            /// </remarks>
-            /// <seealso cref="PopupsActions" />
-            public void AddCallbacks(IPopupsActions instance)
-            {
-                if (instance == null || m_Wrapper.m_PopupsActionsCallbackInterfaces.Contains(instance)) return;
-                m_Wrapper.m_PopupsActionsCallbackInterfaces.Add(instance);
-                @Close.started += instance.OnClose;
-                @Close.performed += instance.OnClose;
-                @Close.canceled += instance.OnClose;
-            }
-
-            /// <summary>
-            /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
-            /// </summary>
-            /// <remarks>
-            /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
-            /// </remarks>
-            /// <seealso cref="PopupsActions" />
-            private void UnregisterCallbacks(IPopupsActions instance)
-            {
-                @Close.started -= instance.OnClose;
-                @Close.performed -= instance.OnClose;
-                @Close.canceled -= instance.OnClose;
-            }
-
-            /// <summary>
-            /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="PopupsActions.UnregisterCallbacks(IPopupsActions)" />.
-            /// </summary>
-            /// <seealso cref="PopupsActions.UnregisterCallbacks(IPopupsActions)" />
-            public void RemoveCallbacks(IPopupsActions instance)
-            {
-                if (m_Wrapper.m_PopupsActionsCallbackInterfaces.Remove(instance))
-                    UnregisterCallbacks(instance);
-            }
-
-            /// <summary>
-            /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
-            /// </summary>
-            /// <remarks>
-            /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
-            /// </remarks>
-            /// <seealso cref="PopupsActions.AddCallbacks(IPopupsActions)" />
-            /// <seealso cref="PopupsActions.RemoveCallbacks(IPopupsActions)" />
-            /// <seealso cref="PopupsActions.UnregisterCallbacks(IPopupsActions)" />
-            public void SetCallbacks(IPopupsActions instance)
-            {
-                foreach (var item in m_Wrapper.m_PopupsActionsCallbackInterfaces)
-                    UnregisterCallbacks(item);
-                m_Wrapper.m_PopupsActionsCallbackInterfaces.Clear();
-                AddCallbacks(instance);
-            }
-        }
-        /// <summary>
-        /// Provides a new <see cref="PopupsActions" /> instance referencing this action map.
-        /// </summary>
-        public PopupsActions @Popups => new PopupsActions(this);
         private int m_KeyboardMouseSchemeIndex = -1;
         /// <summary>
         /// Provides access to the input control scheme.
@@ -1275,11 +1179,11 @@ namespace InfiniteVoidRPG
             }
         }
         /// <summary>
-        /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Selectables" which allows adding and removing callbacks.
+        /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UIControls" which allows adding and removing callbacks.
         /// </summary>
-        /// <seealso cref="SelectablesActions.AddCallbacks(ISelectablesActions)" />
-        /// <seealso cref="SelectablesActions.RemoveCallbacks(ISelectablesActions)" />
-        public interface ISelectablesActions
+        /// <seealso cref="UIControlsActions.AddCallbacks(IUIControlsActions)" />
+        /// <seealso cref="UIControlsActions.RemoveCallbacks(IUIControlsActions)" />
+        public interface IUIControlsActions
         {
             /// <summary>
             /// Method invoked when associated input action "Move" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
@@ -1295,6 +1199,13 @@ namespace InfiniteVoidRPG
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnSubmit(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Cancel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnCancel(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "InputButtons" which allows adding and removing callbacks.
@@ -1366,21 +1277,6 @@ namespace InfiniteVoidRPG
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnSettings(InputAction.CallbackContext context);
-        }
-        /// <summary>
-        /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Popups" which allows adding and removing callbacks.
-        /// </summary>
-        /// <seealso cref="PopupsActions.AddCallbacks(IPopupsActions)" />
-        /// <seealso cref="PopupsActions.RemoveCallbacks(IPopupsActions)" />
-        public interface IPopupsActions
-        {
-            /// <summary>
-            /// Method invoked when associated input action "Close" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-            /// </summary>
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnClose(InputAction.CallbackContext context);
         }
     }
 }
